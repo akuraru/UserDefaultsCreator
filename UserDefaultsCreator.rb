@@ -1,10 +1,19 @@
 require 'kconv'
 require 'fileutils'
 
-$omission = false
-$/
+$shorthand = false
 $register = true
+$help = false
+$fileName = "UDManager"
 $/
+require 'optparse'
+opt = OptionParser.new
+opt.on('-s', '--shorthand') {|v| $shorthand = true }
+opt.on('-i', '--no_init') {|v| $register = false }
+opt.on('-h', '--help') {|v| $help = true }
+opt.on("-f [file]", "--file_name [file]") {|v| $fileName = v}
+
+opt.permute!(ARGV)
 
 class Type
   def initialize(name)
@@ -63,7 +72,7 @@ class Type
     obj
   end
   def inImpGetter
-  if ($omission)
+  if ($shorthand)
     "    return " + typeExchange("defaults[#{self.define}]") + ";\n"
   else
     "    return [defaults #{self.impGetMessage}:#{self.define}];\n"
@@ -73,7 +82,7 @@ class Type
     "#{self.getter} \{\n#{self.inImpGetter}\}\n"
   end
   def inImpSetter
-    if ($omission)
+    if ($shorthand)
       "    defaults[#{self.define}] = " + objectExchange(self.name) + ";\n    [defaults synchronize];\n"
     else
       "    [defaults #{self.impSetMessage}:#{self.name} forKey:#{self.define}];\n    [defaults synchronize];\n"
@@ -332,20 +341,25 @@ class UserDefualts
   def main(file, dir)
     arrType = self.exchange(self.fileRead(file))
     
-    fileName = "UserDefaults"
-    head = "#{dir}#{fileName}.h"
+    head = "#{dir}#{$fileName}.h"
     FileUtils.mkdir_p(dir) unless FileTest.exist?(dir)
     File.open(head, "w:UTF-16"){|f|
-      f.write self.header(arrType, fileName)
+      f.write self.header(arrType, $fileName)
     }
-    File.open("#{dir}#{fileName}.m", "w:UTF-16"){|f|
-      f.write self.method(arrType, fileName)
+    File.open("#{dir}#{$fileName}.m", "w:UTF-16"){|f|
+      f.write self.method(arrType, $fileName)
     }
   end
 end
 
-if ARGV.count < 2
+if ARGV.count < 2 || $help
+  puts "UserDefaultsCreator: Usage [Option] <argumrnt> [...]"
   puts "need more than 2 argv"
+  puts ""
+  puts "-s, --shorthand Use the shorthand"
+  puts "-i, --no_init Do not insert the initialization"
+  puts "-h, --help Display this help and exit"
+  puts "-f FILENAME, --file_name FILENAME Specify a file name"
 elsif ARGV.count >= 2
   UserDefualts.new.main(ARGV[0], ARGV[1])
   puts "Generate"
