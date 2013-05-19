@@ -1,0 +1,10 @@
+NSString *itIsLongName;
+NSNumber *number;
+NSArray *array;
+NSDictionary *dict;
+NSData *data;
+NSDate *date;
+NSInteger i;
+BOOL b;
+float f;
+double d;
