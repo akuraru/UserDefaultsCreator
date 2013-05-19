@@ -308,7 +308,9 @@ class UserDefualts
     }.flatten
   end
   def header(arrType, fileName)
-    "\n\#import <Foundation/Foundation.h>\n\n\@interface #{fileName} : NSObject\n\n+ (instancetype)sharedManager;\n\n" + 
+    "\n\#import <Foundation/Foundation.h>\n\n" +
+    self.define(arrType) +
+    "\n\@interface #{fileName} : NSObject\n\n+ (instancetype)sharedManager;\n\n" + 
     arrType.map{|s| s.interface + "\n"}.inject(""){|s, i| s + i} + 
     "\@end\n"
   end
@@ -332,8 +334,7 @@ class UserDefualts
   end
   def method(arrType, fileName)
     "\#import \"#{fileName}.h\"\n\n" +
-    self.define(arrType) +
-    "\n@implementation #{fileName} {\n    NSUserDefaults *defaults;\n}\n\n+ (instancetype)sharedManager {\n    static #{fileName} *sharedManager_ = nil;\n    static dispatch_once_t onceToken;\n    dispatch_once(&onceToken, ^{\n        sharedManager_ = #{fileName}.new;\n    });\n\n    return sharedManager_;\n}\n\n" +
+    "\@implementation #{fileName} {\n    NSUserDefaults *defaults;\n}\n\n+ (instancetype)sharedManager {\n    static #{fileName} *sharedManager_ = nil;\n    static dispatch_once_t onceToken;\n    dispatch_once(&onceToken, ^{\n        sharedManager_ = #{fileName}.new;\n    });\n\n    return sharedManager_;\n}\n\n" +
     self.init(arrType) + "\n" +
     self.implementation(arrType) +
     "@end\n"

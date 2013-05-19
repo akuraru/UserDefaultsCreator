@@ -1,4 +1,4 @@
-require 'UserDefaults'
+require 'UserDefaultsCreator'
 
 def test (obj , result)
   if obj != result then
@@ -238,6 +238,13 @@ header = user.header(exchange, "UserDefaults")
 test(header, '
 #import <Foundation/Foundation.h>
 
+#define kHogeHoge @"hogeHoge"
+#define kDdd @"ddd"
+#define kI @"i"
+#define kB @"b"
+#define kF @"f"
+#define kD @"d"
+
 @interface UserDefaults : NSObject
 
 + (instancetype)sharedManager;
@@ -347,13 +354,6 @@ method = user.method(exchange, "UserDefaults")
 test(method,
 '#import "UserDefaults.h"
 
-#define kHogeHoge @"hogeHoge"
-#define kDdd @"ddd"
-#define kI @"i"
-#define kB @"b"
-#define kF @"f"
-#define kD @"d"
-
 @implementation UserDefaults {
     NSUserDefaults *defaults;
 }
@@ -435,7 +435,7 @@ test(method,
 @end
 ')
 
-$omission = true;
+$shorthand = true;
 impGetter = exchange.map{|s| s.impGetter}
 test(impGetter, [
   '- (NSString *)hogeHoge {
