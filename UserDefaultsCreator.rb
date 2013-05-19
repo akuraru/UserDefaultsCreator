@@ -5,12 +5,15 @@ $shorthand = false
 $register = true
 $help = false
 $fileName = "UDManager"
+$non = false
 $/
+
 require 'optparse'
 opt = OptionParser.new
 opt.on('-s', '--shorthand') {|v| $shorthand = true }
 opt.on('-i', '--no_init') {|v| $register = false }
 opt.on('-h', '--help') {|v| $help = true }
+opt.on('--none') {|v| $non = true }
 opt.on("-f [file]", "--file_name [file]") {|v| $fileName = v}
 
 opt.permute!(ARGV)
@@ -275,37 +278,47 @@ class UserDefualts
   def exchange(arrStr)
     arrStr.map{|s|
       if /\s*(\w+) *\* *(\w+)\s*;\s*/ =~ s then
-        if "NSString" == $1
-          [NSString.new($2)]
-        elsif "NSNumber" == $1
-          [NSNumber.new($2)]
-        elsif "NSArray" == $1
-          [NSArray.new($2)]
-        elsif "NSDictionary" == $1
-          [NSDictionary.new($2)]
-        elsif "NSData" == $1
-          [NSData.new($2)]
-        elsif "NSDate" == $1
-          [NSDate.new($2)]
-        else
-          [NSObject.new($2)]
-        end
+        self.object($1, $2)
       elsif /\s*(\w+)\s+(\w+)\s*;\s*/ =~ s then
-        if "NSInteger" == $1 then
-          [NSInteger.new($2)]
-        elsif "BOOL" == $1 then
-          [NSBOOL.new($2)]
-        elsif "float" == $1 then
-          [NSFloat.new($2)]
-        elsif "double" == $1 then
-          [NSDouble.new($2)]
-        else
-          [NSObject.new($2)]
-        end
+        self.value($1, $2)
+      elsif /- \((\w+) \*\)(\w+);/ =~ s then
+          self.object($1, $2)
+      elsif /- \((\w+)\)(\w+);/ =~ s then
+          self.value($1, $2)
       else
         []
       end
     }.flatten
+  end
+  def object(type, name)
+    if "NSString" == type
+      [NSString.new(name)]
+    elsif "NSNumber" == type
+      [NSNumber.new(name)]
+    elsif "NSArray" == type
+      [NSArray.new(name)]
+    elsif "NSDictionary" == type
+      [NSDictionary.new(name)]
+    elsif "NSData" == type
+      [NSData.new(name)]
+    elsif "NSDate" == type
+      [NSDate.new(name)]
+    else
+      [NSObject.new(name)]
+    end
+  end
+  def value(type, name)
+    if "NSInteger" == type then
+      [NSInteger.new(name)]
+    elsif "BOOL" == type then
+      [NSBOOL.new(name)]
+    elsif "float" == type then
+      [NSFloat.new(name)]
+    elsif "double" == type then
+      [NSDouble.new(name)]
+    else
+      [NSObject.new(name)]
+    end
   end
   def header(arrType, fileName)
     "\n\#import <Foundation/Foundation.h>\n\n" +
@@ -352,8 +365,8 @@ class UserDefualts
     }
   end
 end
-
-if ARGV.count < 2 || $help
+if $non
+elsif ARGV.count < 2 || $help
   puts "UserDefaultsCreator: Usage [Option] <argumrnt> [...]"
   puts "need more than 2 argv"
   puts ""

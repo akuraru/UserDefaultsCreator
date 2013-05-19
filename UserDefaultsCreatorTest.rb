@@ -514,7 +514,7 @@ exchange = user.exchange([
   "NSString *hogeHoge;",
   "NSData *ddd;",
   "NSInteger i;",
-  "BOOL b;",
+  "- (BOOL)b;",
   "    float    f   ;   ",
   "",
   "double d;"
