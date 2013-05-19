@@ -274,23 +274,23 @@ class UserDefualts
   end
   def exchange(arrStr)
     arrStr.map{|s|
-      if /(.+\*) *(.+);/ =~ s then
-        if "NSString *" == $1
+      if /\s*(\w+) *\* *(\w+)\s*;\s*/ =~ s then
+        if "NSString" == $1
           [NSString.new($2)]
-        elsif "NSNumber *" == $1
+        elsif "NSNumber" == $1
           [NSNumber.new($2)]
-        elsif "NSArray *" == $1
+        elsif "NSArray" == $1
           [NSArray.new($2)]
-        elsif "NSDictionary *" == $1
+        elsif "NSDictionary" == $1
           [NSDictionary.new($2)]
-        elsif "NSData *" == $1
+        elsif "NSData" == $1
           [NSData.new($2)]
-        elsif "NSDate *" == $1
+        elsif "NSDate" == $1
           [NSDate.new($2)]
         else
           [NSObject.new($2)]
         end
-      elsif /(.+) +(.+);/ =~ s then
+      elsif /\s*(\w+)\s+(\w+)\s*;\s*/ =~ s then
         if "NSInteger" == $1 then
           [NSInteger.new($2)]
         elsif "BOOL" == $1 then

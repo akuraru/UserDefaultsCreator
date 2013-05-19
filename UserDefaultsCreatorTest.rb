@@ -509,3 +509,21 @@ test(init, '- (id)init {
     return self;
 }
 ')
+
+exchange = user.exchange([
+  "NSString *hogeHoge;",
+  "NSData *ddd;",
+  "NSInteger i;",
+  "BOOL b;",
+  "    float    f   ;   ",
+  "",
+  "double d;"
+])
+test(exchange, [
+  NSString.new("hogeHoge"),
+  NSData.new("ddd"),
+  NSInteger.new("i"),
+  NSBOOL.new("b"),
+  NSFloat.new("f"),
+  NSDouble.new("d"),
+])
