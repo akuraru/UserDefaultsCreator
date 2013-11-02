@@ -269,7 +269,7 @@ class UserDefualts
   end
   def fileRead(fileName)
     data = nil
-    File.open(fileName, "r:UTF-16") {|f|
+    File.open(fileName,  :mode => "rb", :encoding => "UTF-16LE") {|f|
       transText = f.read.toutf8
       data = transText.scan(/(.*)\n/).flatten
     }
@@ -320,24 +320,31 @@ class UserDefualts
       [NSObject.new(name)]
     end
   end
+  def registHeader 
+    if ($register)
+      ""
+    else
+      "- (void)registerDefaults:(NSDictionary *)dict;\n"
+    end
+  end
   def header(arrType, fileName)
     "\n\#import <Foundation/Foundation.h>\n\n" +
     self.define(arrType) +
-    "\n\@interface #{fileName} : NSObject\n\n+ (instancetype)sharedManager;\n\n" + 
+    "\n\@interface #{fileName} : NSObject\n\n+ (instancetype)sharedManager;\n#{self.registHeader}\n" + 
     arrType.map{|s| s.interface + "\n"}.inject(""){|s, i| s + i} + 
     "\@end\n"
   end
   def registerDefaults(arrType)
-    if ($register) 
-      "        [defaults registerDefaults:@{\n" +
-      arrType.map{|s| s.registerDefault}.select{|s| s != ""}.map{|s| " "*12 + s + ",\n"}.inject(""){|s, i| s + i} +
-      "        }];\n"
-    else 
-      ""
-    end
+    "        [defaults registerDefaults:@{\n" +
+    arrType.map{|s| s.registerDefault}.select{|s| s != ""}.map{|s| " "*12 + s + ",\n"}.inject(""){|s, i| s + i} +
+    "        }];\n"
   end
   def init(arrType)
-    "- (id)init {\n    self = [super init];\n    if (self != nil) {\n        defaults = [NSUserDefaults standardUserDefaults];\n#{self.registerDefaults(arrType)}    }\n\n    return self;\n}\n"
+    if ($register) 
+      "- (id)init {\n    self = [super init];\n    if (self != nil) {\n        defaults = [NSUserDefaults standardUserDefaults];\n#{self.registerDefaults(arrType)}    }\n\n    return self;\n}\n"
+    else
+      "- (id)init {\n    self = [super init];\n    if (self != nil) {\n        defaults = [NSUserDefaults standardUserDefaults];\n    }\n\n    return self;\n}\n- (void)registerDefaults:(NSDictionary *)dict {\n    [defaults registerDefaults:dict];\n}\n"
+    end
   end
   def define(arrType)
     arrType.map{|s| s.impDefine}.inject(""){|s, i| s + i}
