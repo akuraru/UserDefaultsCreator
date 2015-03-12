@@ -141,7 +141,7 @@ module Udgenerator
 	end
 	class NSDate < NSObject
 		def == (type)
-			NSData === type && super(type)
+			NSDate === type && super(type)
 		end
 		def type_name
 			"NSDate *"

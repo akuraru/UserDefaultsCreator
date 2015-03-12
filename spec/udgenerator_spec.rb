@@ -25,6 +25,7 @@ describe Udgenerator do
       ]
       expect(text).to eq ex
     end
+
     before {
       @exchange = Udgenerator::c.map{|d| d[:exchange]}
     }
@@ -41,6 +42,7 @@ describe Udgenerator do
 #define kD @"d"
 #define kAry @"ary"
 #define kDic @"dic"
+#define kDay @"day"
 
 @interface UserDefaults : NSObject
 
@@ -70,6 +72,9 @@ describe Udgenerator do
 - (NSDictionary *)dic;
 - (void)setDic:(NSDictionary *)dic;
 
+- (NSDate *)day;
+- (void)setDay:(NSDate *)day;
+
 @end
 '
       end
@@ -85,6 +90,7 @@ describe Udgenerator do
 #define kD @"d"
 #define kAry @"ary"
 #define kDic @"dic"
+#define kDay @"day"
 
 @interface UserDefaults : NSObject
 
@@ -114,6 +120,9 @@ describe Udgenerator do
 
 - (NSDictionary *)dic;
 - (void)setDic:(NSDictionary *)dic;
+
+- (NSDate *)day;
+- (void)setDay:(NSDate *)day;
 
 @end
 '
@@ -149,6 +158,7 @@ describe Udgenerator do
             kD : @0,
             kAry : @[],
             kDic : @{},
+            kDay : [NSDate date],
         }];
     }
 
@@ -216,6 +226,14 @@ describe Udgenerator do
 }
 - (void)setDic:(NSDictionary *)dic {
     [defaults setObject:dic forKey:kDic];
+    [defaults synchronize];
+}
+
+- (NSDate *)day {
+    return [defaults objectForKey:kDay];
+}
+- (void)setDay:(NSDate *)day {
+    [defaults setObject:day forKey:kDay];
     [defaults synchronize];
 }
 
@@ -312,6 +330,14 @@ describe Udgenerator do
 }
 - (void)setDic:(NSDictionary *)dic {
     [defaults setObject:dic forKey:kDic];
+    [defaults synchronize];
+}
+
+- (NSDate *)day {
+    return [defaults objectForKey:kDay];
+}
+- (void)setDay:(NSDate *)day {
+    [defaults setObject:day forKey:kDay];
     [defaults synchronize];
 }
 
