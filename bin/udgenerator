@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+require "udgenerator/version"
+require "udgenerator"
+require "thor"
+
+module Udgenerator
+  #= Udgenerator CLI
+  class CLI < Thor
+    default_task :update
+
+    option :auto_init, :type => :boolean, :aliases => '-i', :default => true, :desc => 'auto initialization. all zero or empty string, etc ...'
+    option :none, :type => :boolean, :aliases => '-n', :default => true, :desc => ''
+    option :input_file, :type => :string, :aliases => '-f', :default => true, :required => true,  :desc => 'input file'
+    option :output_file, :type => :string, :aliases => '-o', :default => true, :desc => 'output file'
+    desc "generate", "generate storyboard"
+    def update
+      Core.new.generate(options)
+    end
+
+    desc "version", "version"
+    def version
+      p VERSION
+    end
+  end
+end
+
+Udgenerator::CLI.start(ARGV)

@@ -1,8 +1,16 @@
-require "udcreater/version"
-require "udcreater/type"
+require "udgenerator/version"
+require "udgenerator/type"
 
-module Udcreater
+module Udgenerator
 	class Core
+		def generator(options)
+			arrType = self.exchange(self.fileRead(file))
+
+			FileUtils.mkdir_p(dir) unless FileTest.exist?(dir)
+			File.open("#{dir}#{$fileName}.h", "w:UTF-8").write self.header(arrType, $fileName)
+			File.open("#{dir}#{$fileName}.m", "w:UTF-8").write self.method(arrType, $fileName)
+		end
+
 		def initialize
 		end
 		def fileRead(fileName)
@@ -14,7 +22,7 @@ module Udcreater
 					self.object($1, $2)
 				elsif /\s*(\w+)\s+(\w+)\s*;\s*/ =~ s then
 					self.value($1, $2)
-				elsif /- \((\w+) \*\)(\w+);/ =~ s then
+				elsif /- \((\w+) *\* *\)(\w+);/ =~ s then
 					self.object($1, $2)
 				elsif /- \((\w+)\)(\w+);/ =~ s then
 					self.value($1, $2)
@@ -91,13 +99,6 @@ module Udcreater
 				self.init(arrType, register) + "\n" +
 				self.implementation(arrType) +
 				"@end\n"
-		end
-		def main(file, dir)
-			arrType = self.exchange(self.fileRead(file))
-
-			FileUtils.mkdir_p(dir) unless FileTest.exist?(dir)
-			File.open("#{dir}#{$fileName}.h", "w:UTF-8").write self.header(arrType, $fileName)
-			File.open("#{dir}#{$fileName}.m", "w:UTF-8").write self.method(arrType, $fileName)
 		end
 	end
 end

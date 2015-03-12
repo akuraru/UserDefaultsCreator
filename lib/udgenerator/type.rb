@@ -1,4 +1,4 @@
-module Udcreater
+module Udgenerator
 	class Type
 		attr_accessor :name
 
@@ -119,7 +119,7 @@ module Udcreater
 	end
 	class NSDictionary < NSObject
 		def == (type)
-			NSODictionary === type && super(type)
+			NSDictionary === type && super(type)
 		end
 		def type_name
 			"NSDictionary *"
