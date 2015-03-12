@@ -1,0 +1,72 @@
+#!/usr/bin/env ruby
+
+require "ibtoolTranslation/version"
+require "ibtoolTranslation"
+require "thor"
+
+module IbtoolTranslation
+  #= IbtoolTranslation CLI
+  class CLI < Thor
+    default_task :update
+
+    option :dir, :type => :string, :aliases => '-d',:required => true, :desc => 'directory of the reference'
+    option :string, :type => :boolean, :aliases => '-s', :default => false, :desc => 'use localizable strings'
+    option :from, :type => :string , :aliases => '-f',:required => true, :desc => 'storyboard of the reference'
+    option :to, :type => :array, :aliases => '-t',:required => true, :desc => 'storyboards of the result'
+    desc "update", "update storyboard"
+    def update
+      IbtoolTranslation::Core.new.update(options[:dir], options[:from], options[:to], options[:string])
+    end
+
+    option :dir, :type => :string, :aliases => '-d',:required => true, :desc => 'directory of the reference'
+    option :string, :type => :boolean, :aliases => '-s', :default => false, :desc => 'use localizable strings'
+    option :from, :type => :string , :aliases => '-f',:required => true, :desc => 'storyboard of the reference'
+    option :to, :type => :array, :aliases => '-t',:required => true, :desc => 'storyboards of the result'
+    desc "create", "create Translation.strings"
+    def create
+      IbtoolTranslation::Core.new.create(options[:dir], options[:from], options[:to], options[:string])
+    end
+    desc "version", "version"
+    def version
+      p IbtoolTranslation::VERSION
+    end
+  end
+end
+
+IbtoolTranslation::CLI.start(ARGV)
+
+# require 'kconv'
+# require 'fileutils'
+
+# $shorthand = false
+# $register = true
+# $help = false
+# $fileName = "UDManager"
+# $non = false
+# $/
+
+# require 'optparse'
+# opt = OptionParser.new
+# opt.on('-s', '--shorthand') {|v| $shorthand = true }
+# opt.on('-i', '--no_init') {|v| $register = false }
+# opt.on('-h', '--help') {|v| $help = true }
+# opt.on('--none') {|v| $non = true }
+# opt.on("-f [file]", "--file_name [file]") {|v| $fileName = v}
+
+# opt.permute!(ARGV)
+  
+# class UserDefualts
+# end
+# if $non
+# elsif ARGV.count < 2 || $help
+#   puts "UserDefaultsCreator: Usage [Option] <argumrnt> [...]"
+#   puts "need more than 2 argv"
+#   puts ""
+#   puts "-s, --shorthand Use the shorthand"
+#   puts "-i, --no_init Do not insert the initialization"
+#   puts "-h, --help Display this help and exit"
+#   puts "-f FILENAME, --file_name FILENAME Specify a file name"
+# elsif ARGV.count >= 2
+#   UserDefualts.new.main(ARGV[0], ARGV[1])
+#   puts "Generate"
+# end
