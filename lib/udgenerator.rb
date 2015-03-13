@@ -1,5 +1,6 @@
 require "udgenerator/version"
 require "udgenerator/type"
+require "udgenerator/objective"
 
 module Udgenerator
 	class Core
@@ -10,56 +11,23 @@ module Udgenerator
 			File.open("#{dir}#{$fileName}.h", "w:UTF-8").write self.header(arrType, $fileName)
 			File.open("#{dir}#{$fileName}.m", "w:UTF-8").write self.method(arrType, $fileName)
 		end
-
 		def initialize
+		end
+		def capitalize(str)
+			c = str
+			c[0,1].capitalize + c[1..-1]
+		end
+		def define(str)
+			"k" + capitalize(str)
+		end
+		def to_nsstring(str)
+			'@"' + str + '"'
+		end
+		def exchange(arrStr)
+			Objective.new().parse(arrStr)
 		end
 		def fileRead(fileName)
 			File.open(fileName, :encoding => Encoding::UTF_8).read.scan(/(.*)\n/).flatten
-		end
-		def exchange(arrStr)
-			arrStr.map{|s|
-				if /\s*(\w+) *\* *(\w+)\s*;\s*/ =~ s then
-					self.object($1, $2)
-				elsif /\s*(\w+)\s+(\w+)\s*;\s*/ =~ s then
-					self.value($1, $2)
-				elsif /- \((\w+) *\* *\)(\w+);/ =~ s then
-					self.object($1, $2)
-				elsif /- \((\w+)\)(\w+);/ =~ s then
-					self.value($1, $2)
-				else
-					[]
-				end
-			}.flatten
-		end
-		def object(type, name)
-			if "NSString" == type
-				[NSString.new(name)]
-			elsif "NSNumber" == type
-				[NSNumber.new(name)]
-			elsif "NSArray" == type
-				[NSArray.new(name)]
-			elsif "NSDictionary" == type
-				[NSDictionary.new(name)]
-			elsif "NSData" == type
-				[NSData.new(name)]
-			elsif "NSDate" == type
-				[NSDate.new(name)]
-			else
-				[NSObject.new(name)]
-			end
-		end
-		def value(type, name)
-			if "NSInteger" == type then
-				[NSInteger.new(name)]
-			elsif "BOOL" == type then
-				[NSBOOL.new(name)]
-			elsif "float" == type then
-				[NSFloat.new(name)]
-			elsif "double" == type then
-				[NSDouble.new(name)]
-			else
-				[NSObject.new(name)]
-			end
 		end
 		def registHeader(register)
 			if (register)

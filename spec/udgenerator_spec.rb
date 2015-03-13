@@ -43,6 +43,7 @@ describe Udgenerator do
 #define kAry @"ary"
 #define kDic @"dic"
 #define kDay @"day"
+#define kUrl @"url"
 
 @interface UserDefaults : NSObject
 
@@ -75,6 +76,9 @@ describe Udgenerator do
 - (NSDate *)day;
 - (void)setDay:(NSDate *)day;
 
+- (id)url;
+- (void)setUrl:(id)url;
+
 @end
 '
       end
@@ -91,6 +95,7 @@ describe Udgenerator do
 #define kAry @"ary"
 #define kDic @"dic"
 #define kDay @"day"
+#define kUrl @"url"
 
 @interface UserDefaults : NSObject
 
@@ -123,6 +128,9 @@ describe Udgenerator do
 
 - (NSDate *)day;
 - (void)setDay:(NSDate *)day;
+
+- (id)url;
+- (void)setUrl:(id)url;
 
 @end
 '
@@ -237,6 +245,14 @@ describe Udgenerator do
     [defaults synchronize];
 }
 
+- (id)url {
+    return [defaults objectForKey:kUrl];
+}
+- (void)setUrl:(id)url {
+    [defaults setObject:url forKey:kUrl];
+    [defaults synchronize];
+}
+
 @end
 '
       end
@@ -338,6 +354,14 @@ describe Udgenerator do
 }
 - (void)setDay:(NSDate *)day {
     [defaults setObject:day forKey:kDay];
+    [defaults synchronize];
+}
+
+- (id)url {
+    return [defaults objectForKey:kUrl];
+}
+- (void)setUrl:(id)url {
+    [defaults setObject:url forKey:kUrl];
     [defaults synchronize];
 }
 

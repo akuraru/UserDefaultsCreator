@@ -8,16 +8,6 @@ module Udgenerator
 		def == (type)
 			@name == type.name
 		end
-		def capitalize
-			c = @name
-			c[0,1].capitalize + c[1..-1]
-		end
-		def define
-			"k" + self.capitalize
-		end
-		def to_nsstring
-			'@"' + @name + '"'
-		end
 		def type_name
 			"Type"
 		end
@@ -43,7 +33,11 @@ module Udgenerator
 			""
 		end
 		def register_default
-			"#{self.define} : #{self.defaultValue}"
+			if (0 < self.defaultValue.length ) then
+				"#{self.define} : #{self.defaultValue}"
+			else
+				""
+			end
 		end
 		def imp_set_message
 			""
@@ -134,9 +128,6 @@ module Udgenerator
 		end
 		def type_name
 			"NSData *"
-		end
-		def register_default
-			""
 		end
 	end
 	class NSDate < NSObject

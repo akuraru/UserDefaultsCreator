@@ -5,25 +5,19 @@ describe Udgenerator do
     @creater = Udgenerator::Core.new
   }
   context 'Type' do
-    it :expect do
-      expect(@creater.exchange([""])).to eq []
-    end
     Udgenerator::c.each { |d|
       context d[:string] do
         before(:each) {
-          @exchange = @creater.exchange([d[:text]])[0]
+          @exchange = @creater.exchange([d[:text]])
         }
-        it :expect do
-          expect(@exchange).to eq d[:exchange]
-        end
         it :capitalize do
-          expect(@exchange.capitalize).to eq d[:capitalize]
+          expect(@creater.capitalize(d[:key])).to eq d[:capitalize]
         end
         it :define do
-          expect(@exchange.define).to eq d[:define]
+          expect(@creater.define(d[:key])).to eq d[:define]
         end
         it :to_nsstring do
-          expect(@exchange.to_nsstring).to eq d[:to_nsstring]
+          expect(@creater.to_nsstring(d[:key])).to eq d[:to_nsstring]
         end
         it :type_name do
           expect(@exchange.type_name).to eq d[:type_name]
