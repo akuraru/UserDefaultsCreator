@@ -20,25 +20,25 @@ describe Udgenerator do
           expect(@creater.to_nsstring(d[:key])).to eq d[:to_nsstring]
         end
         it :type_name do
-          expect(@exchange.type_name).to eq d[:type_name]
+          expect(@exchange[d[:key]].type_name).to eq d[:type_name]
         end
         it :interface_getter do
-          expect(@exchange.interface_getter).to eq d[:interface_getter]
+          expect(@creater.interface_getter(d[:key], @exchange[d[:key]])).to eq d[:interface_getter]
         end
         it :interface_setter do
-          expect(@exchange.interface_setter).to eq d[:interface_setter]
+          expect(@creater.interface_setter(d[:key], @exchange[d[:key]])).to eq d[:interface_setter]
         end
         it :imp_define do
-          expect(@exchange.imp_define).to eq d[:imp_define]
+          expect(@creater.imp_define(d[:key], @exchange[d[:key]])).to eq d[:imp_define]
         end
         it :register_default do
-          expect(@exchange.register_default).to eq d[:register_default]
+          expect(@creater.register_default(d[:key], @exchange[d[:key]])).to eq d[:register_default]
         end
         it :imp_get_message do
-          expect(@exchange.imp_get_message).to eq d[:imp_get_message]
+          expect(@exchange[d[:key]].imp_get_message).to eq d[:imp_get_message]
         end
         it :imp_set_message do
-          expect(@exchange.imp_set_message).to eq d[:imp_set_message]
+          expect(@exchange[d[:key]].imp_set_message).to eq d[:imp_set_message]
         end
       end
     }

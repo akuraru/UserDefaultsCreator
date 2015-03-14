@@ -1,43 +1,15 @@
 module Udgenerator
 	class Type
-		attr_accessor :name
-
-		def initialize(name)
-			@name = name
+		def initialize()
 		end
 		def == (type)
-			@name == type.name
+			true
 		end
 		def type_name
 			"Type"
 		end
-		def getter
-			"- (#{self.type_name})#{self.name}"
-		end
-		def interface_getter
-			self.getter + ";\n"
-		end
-		def setter
-			"- (void)set#{self.capitalize}:(#{self.type_name})#{self.name}"
-		end
-		def interface_setter
-			self.setter + ";\n"
-		end
-		def interface
-			self.interface_getter + interface_setter
-		end
-		def imp_define
-			"\#define #{self.define} #{self.to_nsstring}\n"
-		end
 		def defaultValue
 			""
-		end
-		def register_default
-			if (0 < self.defaultValue.length ) then
-				"#{self.define} : #{self.defaultValue}"
-			else
-				""
-			end
 		end
 		def imp_set_message
 			""
@@ -47,18 +19,6 @@ module Udgenerator
 		end
 		def objectExchange(obj)
 			obj
-		end
-		def inImpGetter
-			"    return [defaults #{self.imp_get_message}:#{self.define}];\n"
-		end
-		def impGetter
-			"#{self.getter} \{\n#{self.inImpGetter}\}\n"
-		end
-		def inImpSetter
-			"    [defaults #{self.imp_set_message}:#{self.name} forKey:#{self.define}];\n    [defaults synchronize];\n"
-		end
-		def impSetter
-			"#{self.setter} \{\n#{self.inImpSetter}\}\n"
 		end
 		def property
 			"@property #{self.type_name} #{self.name};\n"

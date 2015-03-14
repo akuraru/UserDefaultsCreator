@@ -27,7 +27,7 @@ describe Udgenerator do
     end
 
     before {
-      @exchange = Udgenerator::c.map{|d| d[:exchange]}
+      @exchange = @creater.exchange(Udgenerator::c.map{|d| d[:text]})
     }
     context 'header' do
       it 'true' do

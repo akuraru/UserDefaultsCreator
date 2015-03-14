@@ -5,45 +5,45 @@ module Udgenerator
 			result = {}
 			arrStr.each{|s|
 				if /\s*(\w+) *\* *(\w+)\s*;\s*/ =~ s then
-					result[$2] = object($1, $2)
+					result[$2] = object($1)
 				elsif /- \((\w+) *\* *\)(\w+);/ =~ s then
-					result[$2] = object($1, $2)
+					result[$2] = object($1)
 				elsif /\s*(\w+)\s+(\w+)\s*;\s*/ =~ s then
-					result[$2] = value($1, $2)
+					result[$2] = value($1)
 				elsif /- \((\w+)\)(\w+);/ =~ s then
-					result[$2] = value($1, $2)
+					result[$2] = value($1)
 				end
 			}
 			result
 		end
-		def object(type, name)
+		def object(type)
 			if "NSString" == type
-				NSString.new(name)
+				NSString.new()
 			elsif "NSNumber" == type
-				NSNumber.new(name)
+				NSNumber.new()
 			elsif "NSArray" == type
-				NSArray.new(name)
+				NSArray.new()
 			elsif "NSDictionary" == type
-				NSDictionary.new(name)
+				NSDictionary.new()
 			elsif "NSData" == type
-				NSData.new(name)
+				NSData.new()
 			elsif "NSDate" == type
-				NSDate.new(name)
+				NSDate.new()
 			else
-				NSObject.new(name)
+				NSObject.new()
 			end
 		end
-		def value(type, name)
+		def value(type)
 			if "NSInteger" == type then
-				NSInteger.new(name)
+				NSInteger.new()
 			elsif "BOOL" == type then
-				NSBOOL.new(name)
+				NSBOOL.new()
 			elsif "float" == type then
-				NSFloat.new(name)
+				NSFloat.new()
 			elsif "double" == type then
-				NSDouble.new(name)
+				NSDouble.new()
 			else
-				NSObject.new(name)
+				NSObject.new()
 			end
 		end
 	end

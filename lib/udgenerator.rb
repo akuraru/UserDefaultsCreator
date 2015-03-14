@@ -14,8 +14,7 @@ module Udgenerator
 		def initialize
 		end
 		def capitalize(str)
-			c = str
-			c[0,1].capitalize + c[1..-1]
+			str[0,1].capitalize + str[1..-1]
 		end
 		def define(str)
 			"k" + capitalize(str)
@@ -23,6 +22,44 @@ module Udgenerator
 		def to_nsstring(str)
 			'@"' + str + '"'
 		end
+		def getter(key, value)
+			"- (#{value.type_name})#{key}"
+		end
+		def interface_getter(key, value)
+			getter(key, value) + ";\n"
+		end
+		def setter(key, value)
+			"- (void)set#{capitalize(key)}:(#{value.type_name})#{key}"
+		end
+		def interface_setter(key, value)
+			setter(key, value) + ";\n"
+		end
+		def interface(key, value)
+			interface_getter(key, value) + interface_setter(key, value)
+		end
+		def imp_define(key, value)
+			"\#define #{define(key)} #{to_nsstring(key)}\n"
+		end
+		def register_default(key, value)
+			if (0 < value.defaultValue.length ) then
+				"#{define(key)} : #{value.defaultValue}"
+			else
+				""
+			end
+		end
+		def in_imp_getter(key, value)
+			"    return [defaults #{value.imp_get_message}:#{define(key)}];\n"
+		end
+		def impGetter(key, value)
+			"#{getter(key, value)} \{\n#{in_imp_getter(key, value)}\}\n"
+		end
+		def in_imp_setter(key, value)
+			"    [defaults #{value.imp_set_message}:#{key} forKey:#{define(key)}];\n    [defaults synchronize];\n"
+		end
+		def impSetter(key, value)
+			"#{setter(key, value)} \{\n#{in_imp_setter(key, value)}\}\n"
+		end
+
 		def exchange(arrStr)
 			Objective.new().parse(arrStr)
 		end
@@ -37,29 +74,37 @@ module Udgenerator
 			end
 		end
 		def header(arrType, fileName, register)
+			result = ""
+			arrType.each_pair{|k, v| result += interface(k, v) + "\n"}
 			"\n\#import <Foundation/Foundation.h>\n\n" +
-				self.define(arrType) +
-				"\n\@interface #{fileName} : NSObject\n\n+ (instancetype)sharedManager;\n#{self.registHeader(register)}\n" +
-				arrType.map{|s| s.interface + "\n"}.inject(""){|s, i| s + i} +
+				imp_defines(arrType) +
+				"\n\@interface #{fileName} : NSObject\n\n+ (instancetype)sharedManager;\n#{self.registHeader(register)}\n" + result +
 				"\@end\n"
 		end
 		def registerDefaults(arrType)
-			"        [defaults registerDefaults:@{\n" +
-				arrType.map{|s| s.register_default}.select{|s| s != ""}.map{|s| " "*12 + s + ",\n"}.inject(""){|s, i| s + i} +
-				"        }];\n"
+			result = ""
+			arrType.each_pair{|k, v|
+				d = register_default(k, v)
+				result += " "*12 + d + ",\n" if d != ""
+			}
+			"        [defaults registerDefaults:@{\n" + result + "        }];\n"
 		end
 		def init(arrType, register)
 			if (register)
-				"- (id)init {\n    self = [super init];\n    if (self != nil) {\n        defaults = [NSUserDefaults standardUserDefaults];\n#{self.registerDefaults(arrType)}    }\n\n    return self;\n}\n"
+				"- (id)init {\n    self = [super init];\n    if (self != nil) {\n        defaults = [NSUserDefaults standardUserDefaults];\n#{registerDefaults(arrType)}    }\n\n    return self;\n}\n"
 			else
 				"- (id)init {\n    self = [super init];\n    if (self != nil) {\n        defaults = [NSUserDefaults standardUserDefaults];\n    }\n\n    return self;\n}\n- (void)registerDefaults:(NSDictionary *)dict {\n    [defaults registerDefaults:dict];\n}\n"
 			end
 		end
-		def define(arrType)
-			arrType.map{|s| s.imp_define}.inject(""){|s, i| s + i}
+		def imp_defines(arrType)
+			result = ""
+			arrType.each_pair{|s, d| result += imp_define(s, d)}
+			result
 		end
 		def implementation(arrType)
-			arrType.map{|s| s.impGetter + s.impSetter + "\n"}.inject(""){|s, i| s + i}
+			result = ""
+			arrType.each_pair{|s, d| result += impGetter(s, d) + impSetter(s, d) + "\n"}
+			result
 		end
 		def method(arrType, fileName, register)
 			"\#import \"#{fileName}.h\"\n\n" +
