@@ -1,6 +1,7 @@
 require "udgenerator/version"
 require "udgenerator/type"
 require "udgenerator/objective"
+require "udgenerator/swift"
 
 module Udgenerator
 	class Core
@@ -13,56 +14,7 @@ module Udgenerator
 		end
 		def initialize
 		end
-		def capitalize(str)
-			str[0,1].capitalize + str[1..-1]
-		end
-		def define(str)
-			"k" + capitalize(str)
-		end
-		def to_nsstring(str)
-			'@"' + str + '"'
-		end
-		def getter(key, value)
-			"- (#{value.type_name})#{key}"
-		end
-		def interface_getter(key, value)
-			getter(key, value) + ";\n"
-		end
-		def setter(key, value)
-			"- (void)set#{capitalize(key)}:(#{value.type_name})#{key}"
-		end
-		def interface_setter(key, value)
-			setter(key, value) + ";\n"
-		end
-		def interface(key, value)
-			interface_getter(key, value) + interface_setter(key, value)
-		end
-		def imp_define(key, value)
-			"\#define #{define(key)} #{to_nsstring(key)}\n"
-		end
-		def register_default(key, value)
-			if (0 < value.defaultValue.length ) then
-				"#{define(key)} : #{value.defaultValue}"
-			else
-				""
-			end
-		end
-		def in_imp_getter(key, value)
-			"    return [defaults #{value.imp_get_message}:#{define(key)}];\n"
-		end
-		def impGetter(key, value)
-			"#{getter(key, value)} \{\n#{in_imp_getter(key, value)}\}\n"
-		end
-		def in_imp_setter(key, value)
-			"    [defaults #{value.imp_set_message}:#{key} forKey:#{define(key)}];\n    [defaults synchronize];\n"
-		end
-		def impSetter(key, value)
-			"#{setter(key, value)} \{\n#{in_imp_setter(key, value)}\}\n"
-		end
-
-		def exchange(arrStr)
-			Objective.new().parse(arrStr)
-		end
+		
 		def fileRead(fileName)
 			File.open(fileName, :encoding => Encoding::UTF_8).read.scan(/(.*)\n/).flatten
 		end

@@ -76,8 +76,8 @@ describe Udgenerator do
 - (NSDate *)day;
 - (void)setDay:(NSDate *)day;
 
-- (id)url;
-- (void)setUrl:(id)url;
+- (NSURL *)url;
+- (void)setUrl:(NSURL *)url;
 
 @end
 '
@@ -129,8 +129,8 @@ describe Udgenerator do
 - (NSDate *)day;
 - (void)setDay:(NSDate *)day;
 
-- (id)url;
-- (void)setUrl:(id)url;
+- (NSURL *)url;
+- (void)setUrl:(NSURL *)url;
 
 @end
 '
@@ -245,10 +245,10 @@ describe Udgenerator do
     [defaults synchronize];
 }
 
-- (id)url {
+- (NSURL *)url {
     return [defaults objectForKey:kUrl];
 }
-- (void)setUrl:(id)url {
+- (void)setUrl:(NSURL *)url {
     [defaults setObject:url forKey:kUrl];
     [defaults synchronize];
 }
@@ -357,10 +357,10 @@ describe Udgenerator do
     [defaults synchronize];
 }
 
-- (id)url {
+- (NSURL *)url {
     return [defaults objectForKey:kUrl];
 }
-- (void)setUrl:(id)url {
+- (void)setUrl:(NSURL *)url {
     [defaults setObject:url forKey:kUrl];
     [defaults synchronize];
 }

@@ -1,6 +1,6 @@
 
 module Udgenerator
-	class Objective
+	class Swift
 		def parse(arrStr)
 			result = {}
 			arrStr.each{|s|
@@ -8,16 +8,18 @@ module Udgenerator
 					result[$2] = object($1)
 				elsif /- \((\w+) *\* *\)(\w+);/ =~ s then
 					result[$2] = object($1)
-				elsif /\s*(\w+)\s+(\w+)\s*;\s*/ =~ s then
-					result[$2] = value($1)
-				elsif /- \((\w+)\)(\w+);/ =~ s then
-					result[$2] = value($1)
+				elsif /\s*func\s+(\w+)\(\s*\)\s*->\s*(\w+)\s*\{?\s*/ =~ s then 
+					result[$1] = object($2)
+				elsif /\s*(var|let)\s+(\w+)\s*:\s*(\w+)\s*;?\s*/ =~ s then 
+					result[$2] = object($3)
 				end
 			}
 			result
 		end
 		def object(type)
 			if "NSString" == type
+				NSString.new()
+			elsif "String" == type
 				NSString.new()
 			elsif "NSNumber" == type
 				NSNumber.new()
@@ -29,19 +31,14 @@ module Udgenerator
 				NSData.new()
 			elsif "NSDate" == type
 				NSDate.new()
-			else
-				AnyObject.new("#{type}")
-			end
-		end
-		def value(type)
-			if "NSInteger" == type then
-				NSInteger.new()
-			elsif "BOOL" == type then
+			elsif "Bool" == type
 				NSBOOL.new()
-			elsif "float" == type then
-				NSFloat.new()
-			elsif "double" == type then
+			elsif "Int" == type
+				NSInteger.new()
+			elsif "Double" == type
 				NSDouble.new()
+			elsif "Float" == type
+				NSFloat.new()
 			else
 				AnyObject.new("#{type}")
 			end

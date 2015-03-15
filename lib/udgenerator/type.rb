@@ -1,4 +1,62 @@
 module Udgenerator
+	class Core
+		def capitalize(str)
+			str[0,1].capitalize + str[1..-1]
+		end
+		def define(str)
+			"k" + capitalize(str)
+		end
+		def to_nsstring(str)
+			'@"' + str + '"'
+		end
+		def getter(key, value)
+			"- (#{value.type_name})#{key}"
+		end
+		def interface_getter(key, value)
+			getter(key, value) + ";\n"
+		end
+		def setter(key, value)
+			"- (void)set#{capitalize(key)}:(#{value.type_name})#{key}"
+		end
+		def interface_setter(key, value)
+			setter(key, value) + ";\n"
+		end
+		def interface(key, value)
+			interface_getter(key, value) + interface_setter(key, value)
+		end
+		def imp_define(key, value)
+			"\#define #{define(key)} #{to_nsstring(key)}\n"
+		end
+		def register_default(key, value)
+			if (0 < value.defaultValue.length ) then
+				"#{define(key)} : #{value.defaultValue}"
+			else
+				""
+			end
+		end
+		def in_imp_getter(key, value)
+			"    return [defaults #{value.imp_get_message}:#{define(key)}];\n"
+		end
+		def impGetter(key, value)
+			"#{getter(key, value)} \{\n#{in_imp_getter(key, value)}\}\n"
+		end
+		def in_imp_setter(key, value)
+			"    [defaults #{value.imp_set_message}:#{key} forKey:#{define(key)}];\n    [defaults synchronize];\n"
+		end
+		def impSetter(key, value)
+			"#{setter(key, value)} \{\n#{in_imp_setter(key, value)}\}\n"
+		end
+		def struct(key)
+			"    static let #{key} = \"#{key}\""
+		end
+		def swift_getter(key, value)
+			"func #{key}() -> #{value.swift_type_name}"
+		end
+		def exchange(arrStr)
+			Objective.new().parse(arrStr)
+		end
+	end
+
 	class Type
 		def initialize()
 		end
@@ -6,6 +64,9 @@ module Udgenerator
 			true
 		end
 		def type_name
+			"Type"
+		end
+		def swift_type_name
 			"Type"
 		end
 		def defaultValue
@@ -31,6 +92,9 @@ module Udgenerator
 		def type_name
 			"id"
 		end
+		def swift_type_name
+			"AnyObject"
+		end
 		def imp_get_message
 			"objectForKey"
 		end
@@ -45,6 +109,9 @@ module Udgenerator
 		def type_name
 			"NSString *"
 		end
+		def swift_type_name
+			"String"
+		end
 		def defaultValue
 			"@\"\""
 		end
@@ -55,6 +122,9 @@ module Udgenerator
 		end
 		def type_name
 			"NSNumber *"
+		end
+		def swift_type_name
+			"NSNumber"
 		end
 		def defaultValue
 			"\@0"
@@ -67,6 +137,9 @@ module Udgenerator
 		def type_name
 			"NSArray *"
 		end
+		def swift_type_name
+			"NSArray"
+		end
 		def defaultValue
 			"@[]"
 		end
@@ -77,6 +150,9 @@ module Udgenerator
 		end
 		def type_name
 			"NSDictionary *"
+		end
+		def swift_type_name
+			"NSDictionary"
 		end
 		def defaultValue
 			"@{}"
@@ -89,6 +165,9 @@ module Udgenerator
 		def type_name
 			"NSData *"
 		end
+		def swift_type_name
+			"NSData"
+		end
 	end
 	class NSDate < NSObject
 		def == (type)
@@ -97,8 +176,26 @@ module Udgenerator
 		def type_name
 			"NSDate *"
 		end
+		def swift_type_name
+			"NSDate"
+		end
 		def defaultValue
 			"[NSDate date]"
+		end
+	end
+	class AnyObject < NSObject
+		attr :type
+		def initialize(type)
+			@type = type
+		end
+		def == (type)
+			AnyObject === type && @type === type.type && super(type)
+		end
+		def type_name
+			"#{@type} *"
+		end
+		def swift_type_name
+			@type
 		end
 	end
 	class NSValue < Type
@@ -106,6 +203,9 @@ module Udgenerator
 			NSValue === type && super(type)
 		end
 		def type_name
+			"NSValue"
+		end
+		def swift_type_name
 			"NSValue"
 		end
 		def defaultValue
@@ -125,6 +225,9 @@ module Udgenerator
 		def type_name
 			"NSInteger"
 		end
+		def swift_type_name
+			"Int"
+		end
 		def imp_get_message
 			"integerForKey"
 		end
@@ -141,6 +244,9 @@ module Udgenerator
 		end
 		def type_name
 			"BOOL"
+		end
+		def swift_type_name
+			"Bool"
 		end
 		def imp_get_message
 			"boolForKey"
@@ -159,6 +265,9 @@ module Udgenerator
 		def type_name
 			"float"
 		end
+		def swift_type_name
+			"Float"
+		end
 		def imp_get_message
 			"floatForKey"
 		end
@@ -175,6 +284,9 @@ module Udgenerator
 		end
 		def type_name
 			"double"
+		end
+		def swift_type_name
+			"Double"
 		end
 		def imp_get_message
 			"doubleForKey"

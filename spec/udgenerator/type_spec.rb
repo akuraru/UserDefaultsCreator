@@ -40,6 +40,13 @@ describe Udgenerator do
         it :imp_set_message do
           expect(@exchange[d[:key]].imp_set_message).to eq d[:imp_set_message]
         end
+        # swift
+        it :struct do
+          expect(@creater.struct(d[:key])).to eq d[:struct]
+        end
+        it :swift_getter do
+          expect(@creater.swift_getter(d[:key], @exchange[d[:key]])).to eq d[:swift_getter]
+        end
       end
     }
   end
