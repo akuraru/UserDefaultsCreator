@@ -14,7 +14,7 @@ module Udgenerator
 		end
 		def initialize
 		end
-		
+
 		def fileRead(fileName)
 			File.open(fileName, :encoding => Encoding::UTF_8).read.scan(/(.*)\n/).flatten
 		end
@@ -74,12 +74,10 @@ module Udgenerator
         return Static.instance
     }
     init() {
+' + swift_register_defaults(arrType, fileName, register) + '
     }
     func defaults() -> NSUserDefaults {
         return NSUserDefaults.standardUserDefaults()
-    }
-    func registerDefaults(dict: [String: AnyObject]) {
-        defaults().registerDefaults(dict)
     }
     func set(value: AnyObject?, forKey: String) {
         defaults().setObject(value, forKey: forKey)
@@ -91,7 +89,19 @@ module Udgenerator
 ' + swift_get_sets(arrType, fileName) + '}
 '
 		end
-		def structs(arrType) 
+		def swift_register_defaults(arrType, fileName, register)
+			if register then
+				"        defaults().registerDefaults([\n" + registers(arrType, fileName) + "        ])"
+			else
+				"    }\n    func registerDefaults(dict: [String: AnyObject]) {\n        defaults().registerDefaults(dict)"
+			end
+		end
+		def registers(arrType, fileName)
+			result = ""
+			arrType.each_pair{|k, v| result += swift_register_default(k, v, fileName)}
+			result
+		end
+		def structs(arrType)
 			result = ""
 			arrType.each_pair{|s, d| result += struct(s) + "\n"}
 			result

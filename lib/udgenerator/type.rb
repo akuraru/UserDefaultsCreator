@@ -58,6 +58,13 @@ module Udgenerator
 		def exchange(arrStr)
 			Objective.new().parse(arrStr)
 		end
+		def swift_register_default(key, value, fileName)
+			if (0 < value.swift_default_value.length) then
+				" "*12 + "#{fileName}Register.#{key}: #{value.swift_default_value},\n"
+			else
+				""
+			end
+		end
 	end
 
 	class Type
@@ -73,6 +80,9 @@ module Udgenerator
 			"Type"
 		end
 		def defaultValue
+			""
+		end
+		def swift_default_value
 			""
 		end
 		def imp_set_message
@@ -118,6 +128,9 @@ module Udgenerator
 		def defaultValue
 			"@\"\""
 		end
+		def swift_default_value
+			"\"\""
+		end
 	end
 	class NSNumber < NSObject
 		def == (type)
@@ -131,6 +144,9 @@ module Udgenerator
 		end
 		def defaultValue
 			"\@0"
+		end
+		def swift_default_value
+			"0"
 		end
 	end
 	class NSArray < NSObject
@@ -185,6 +201,9 @@ module Udgenerator
 		def defaultValue
 			"[NSDate date]"
 		end
+		def swift_default_value
+			"NSDate()"
+		end
 	end
 	class AnyObject < NSObject
 		attr :type
@@ -219,6 +238,9 @@ module Udgenerator
 		end
 		def objectExchange(value)
 			"@(#{value})"
+		end
+		def swift_default_value
+			"0"
 		end
 	end
 	class NSInteger < NSValue
@@ -259,6 +281,9 @@ module Udgenerator
 		end
 		def typeExchange(obj)
 			"[#{obj} boolValue]"
+		end
+		def swift_default_value
+			"false"
 		end
 	end
 	class NSFloat < NSValue

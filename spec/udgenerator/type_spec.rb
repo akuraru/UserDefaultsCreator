@@ -50,6 +50,12 @@ describe Udgenerator do
         it :swift_setter do
           expect(@creater.swift_setter(d[:key], @exchange[d[:key]])).to eq d[:swift_setter]
         end
+        it :swift_default_value do
+          expect(@exchange[d[:key]].swift_default_value).to eq d[:swift_default_value]
+        end
+        it :swift_register_default do
+          expect(@creater.swift_register_default(d[:key], @exchange[d[:key]], "")).to eq d[:swift_register_defaults]
+        end
       end
     }
   end
