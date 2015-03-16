@@ -52,6 +52,9 @@ module Udgenerator
 		def swift_getter(key, value)
 			"func #{key}() -> #{value.swift_type_name}"
 		end
+		def swift_setter(key, value)
+			"func set#{capitalize(key)}(#{key}: #{value.swift_type_name})"
+		end
 		def exchange(arrStr)
 			Objective.new().parse(arrStr)
 		end

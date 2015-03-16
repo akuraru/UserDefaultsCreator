@@ -1,37 +1,37 @@
 require 'spec_helper'
 
 describe Udgenerator do
-  it 'has a version number' do
-    expect(Udgenerator::VERSION).not_to be "1.0.0"
-  end
-
-  before(:all) {
-    @creater = Udgenerator::Core.new
-  }
-  context 'userdefaults' do
-    it 'does something useful' do
-      text = @creater.fileRead('file/Base.h')
-      ex = [
-        "NSString *itIsLongName;",
-        "NSNumber *number;",
-        "NSArray *array;",
-        "NSDictionary *dict;",
-        "NSData *data;",
-        "NSDate *date;",
-        "NSInteger i;",
-        "BOOL b;",
-        "float f;",
-        "double d;",
-      ]
-      expect(text).to eq ex
+    it 'has a version number' do
+        expect(Udgenerator::VERSION).not_to be "1.0.0"
     end
 
-    before {
-      @exchange = @creater.exchange(Udgenerator::c.map{|d| d[:text]})
+    before(:all) {
+        @creater = Udgenerator::Core.new
     }
-    context 'header' do
-      it 'true' do
-        expect(@creater.header(@exchange, "UserDefaults", true)).to eq '
+    context 'userdefaults' do
+        it 'does something useful' do
+            text = @creater.fileRead('file/Base.h')
+            ex = [
+                "NSString *itIsLongName;",
+                "NSNumber *number;",
+                "NSArray *array;",
+                "NSDictionary *dict;",
+                "NSData *data;",
+                "NSDate *date;",
+                "NSInteger i;",
+                "BOOL b;",
+                "float f;",
+                "double d;",
+            ]
+            expect(text).to eq ex
+        end
+
+        before {
+            @exchange = @creater.exchange(Udgenerator::c.map{|d| d[:text]})
+        }
+        context 'header' do
+            it 'true' do
+                expect(@creater.header(@exchange, "UserDefaults", true)).to eq '
 #import <Foundation/Foundation.h>
 
 #define kHogeHoge @"hogeHoge"
@@ -81,9 +81,9 @@ describe Udgenerator do
 
 @end
 '
-      end
-      it 'false' do
-        expect(@creater.header(@exchange, "UserDefaults", false)).to eq '
+            end
+            it 'false' do
+                expect(@creater.header(@exchange, "UserDefaults", false)).to eq '
 #import <Foundation/Foundation.h>
 
 #define kHogeHoge @"hogeHoge"
@@ -134,11 +134,11 @@ describe Udgenerator do
 
 @end
 '
-      end
-    end
-    context 'method' do
-      it 'true' do
-        expect(@creater.method(@exchange, "UserDefaults", true)).to eq '#import "UserDefaults.h"
+            end
+        end
+        context 'method' do
+            it 'true' do
+                expect(@creater.method(@exchange, "UserDefaults", true)).to eq '#import "UserDefaults.h"
 
 @implementation UserDefaults {
     NSUserDefaults *defaults;
@@ -255,9 +255,9 @@ describe Udgenerator do
 
 @end
 '
-      end
-      it 'false' do
-        expect(@creater.method(@exchange, "UserDefaults", false)).to eq '#import "UserDefaults.h"
+            end
+            it 'false' do
+                expect(@creater.method(@exchange, "UserDefaults", false)).to eq '#import "UserDefaults.h"
 
 @implementation UserDefaults {
     NSUserDefaults *defaults;
@@ -367,7 +367,121 @@ describe Udgenerator do
 
 @end
 '
-      end
+
+            end
+        end
+        context 'header' do
+            it 'false' do
+                expect(@creater.swift(@exchange, "UserDefaults", false)).to eq'import Foundation
+
+struct UserDefaultsRegister {
+    static let hogeHoge = "hogeHoge"
+    static let ddd = "ddd"
+    static let i = "i"
+    static let b = "b"
+    static let f = "f"
+    static let d = "d"
+    static let ary = "ary"
+    static let dic = "dic"
+    static let day = "day"
+    static let url = "url"
+}
+
+class UserDefaults {
+    class func sharedManager() -> UserDefaults {
+        struct Static {
+            static let instance = UserDefaults()
+        }
+        return Static.instance
+    }
+    init() {
+    }
+    func defaults() -> NSUserDefaults {
+        return NSUserDefaults.standardUserDefaults()
+    }
+    func registerDefaults(dict: [String: AnyObject]) {
+        defaults().registerDefaults(dict)
+    }
+    func set(value: AnyObject?, forKey: String) {
+        defaults().setObject(value, forKey: forKey)
+        defaults().synchronize()
+    }
+    func get(key: String) -> AnyObject? {
+        return defaults().objectForKey(key)
+    }
+
+    func hogeHoge() -> String {
+        return get(UserDefaultsRegister.hogeHoge) as String
+    }
+    func setHogeHoge(hogeHoge: String) {
+        set(hogeHoge, forKey: UserDefaultsRegister.hogeHoge)
+    }
+
+    func ddd() -> NSData {
+        return get(UserDefaultsRegister.ddd) as NSData
+    }
+    func setDdd(ddd: NSData) {
+        set(ddd, forKey: UserDefaultsRegister.ddd)
+    }
+
+    func i() -> Int {
+        return get(UserDefaultsRegister.i) as Int
+    }
+    func setI(i: Int) {
+        set(i, forKey: UserDefaultsRegister.i)
+    }
+
+    func b() -> Bool {
+        return get(UserDefaultsRegister.b) as Bool
+    }
+    func setB(b: Bool) {
+        set(b, forKey: UserDefaultsRegister.b)
+    }
+
+    func f() -> Float {
+        return get(UserDefaultsRegister.f) as Float
+    }
+    func setF(f: Float) {
+        set(f, forKey: UserDefaultsRegister.f)
+    }
+
+    func d() -> Double {
+        return get(UserDefaultsRegister.d) as Double
+    }
+    func setD(d: Double) {
+        set(d, forKey: UserDefaultsRegister.d)
+    }
+
+    func ary() -> NSArray {
+        return get(UserDefaultsRegister.ary) as NSArray
+    }
+    func setAry(ary: NSArray) {
+        set(ary, forKey: UserDefaultsRegister.ary)
+    }
+
+    func dic() -> NSDictionary {
+        return get(UserDefaultsRegister.dic) as NSDictionary
+    }
+    func setDic(dic: NSDictionary) {
+        set(dic, forKey: UserDefaultsRegister.dic)
+    }
+
+    func day() -> NSDate {
+        return get(UserDefaultsRegister.day) as NSDate
+    }
+    func setDay(day: NSDate) {
+        set(day, forKey: UserDefaultsRegister.day)
+    }
+
+    func url() -> NSURL {
+        return get(UserDefaultsRegister.url) as NSURL
+    }
+    func setUrl(url: NSURL) {
+        set(url, forKey: UserDefaultsRegister.url)
+    }
+}
+'
+            end
+        end
     end
-  end
 end

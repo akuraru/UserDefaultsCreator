@@ -65,5 +65,41 @@ module Udgenerator
 				self.implementation(arrType) +
 				"@end\n"
 		end
+		def swift(arrType, fileName, register)
+			"import Foundation\n\nstruct #{fileName}Register {\n#{structs(arrType)}}\n\nclass #{fileName} {" + '
+    class func sharedManager() -> UserDefaults {
+        struct Static {
+            static let instance = UserDefaults()
+        }
+        return Static.instance
+    }
+    init() {
+    }
+    func defaults() -> NSUserDefaults {
+        return NSUserDefaults.standardUserDefaults()
+    }
+    func registerDefaults(dict: [String: AnyObject]) {
+        defaults().registerDefaults(dict)
+    }
+    func set(value: AnyObject?, forKey: String) {
+        defaults().setObject(value, forKey: forKey)
+        defaults().synchronize()
+    }
+    func get(key: String) -> AnyObject? {
+        return defaults().objectForKey(key)
+    }
+' + swift_get_sets(arrType, fileName) + '}
+'
+		end
+		def structs(arrType) 
+			result = ""
+			arrType.each_pair{|s, d| result += struct(s) + "\n"}
+			result
+		end
+		def swift_get_sets(arrType, fileName)
+			result = ""
+			arrType.each_pair{|s, d| result += "\n    #{swift_getter(s, d)} {\n        return get(#{fileName}Register.#{s}) as #{d.swift_type_name}\n    }\n    #{swift_setter(s, d)} {\n        set(#{s}, forKey: #{fileName}Register.#{s})\n    }\n"}
+			result
+		end
 	end
 end

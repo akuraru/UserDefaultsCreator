@@ -47,6 +47,9 @@ describe Udgenerator do
         it :swift_getter do
           expect(@creater.swift_getter(d[:key], @exchange[d[:key]])).to eq d[:swift_getter]
         end
+        it :swift_setter do
+          expect(@creater.swift_setter(d[:key], @exchange[d[:key]])).to eq d[:swift_setter]
+        end
       end
     }
   end
