@@ -58,6 +58,9 @@ module Udgenerator
 		def exchange(arrStr)
 			Objective.new().parse(arrStr)
 		end
+		def swift_exchange(arrStr)
+			Swift.new().parse(arrStr)
+		end
 		def swift_register_default(key, value, fileName)
 			if (0 < value.swift_default_value.length) then
 				" "*12 + "#{fileName}Register.#{key}: #{value.swift_default_value},\n"

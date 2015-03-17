@@ -6,11 +6,15 @@ require "udgenerator/swift"
 module Udgenerator
 	class Core
 		def generator(options)
-			arrType = self.exchange(self.fileRead(file))
-
 			FileUtils.mkdir_p(dir) unless FileTest.exist?(dir)
-			File.open("#{dir}#{$fileName}.h", "w:UTF-8").write self.header(arrType, $fileName)
-			File.open("#{dir}#{$fileName}.m", "w:UTF-8").write self.method(arrType, $fileName)
+			if options[:swift] then
+				arrType = exchange(self.fileRead(file))
+				File.open("#{dir}#{$fileName}.h", "w:UTF-8").write header(arrType, options[:fileName], options[:register])
+				File.open("#{dir}#{$fileName}.m", "w:UTF-8").write method(arrType, options[:fileName], options[:register])
+			else
+				arrType = swift_exchange(self.fileRead(file))
+				File.open("#{dir}#{$fileName}.swift", "w:UTF-8").write swift(arrType, options[:fileName], options[:register])
+			end
 		end
 		def initialize
 		end
@@ -86,8 +90,7 @@ module Udgenerator
     func get(key: String) -> AnyObject? {
         return defaults().objectForKey(key)
     }
-' + swift_get_sets(arrType, fileName) + '}
-'
+' + swift_get_sets(arrType, fileName) + "}\n"
 		end
 		def swift_register_defaults(arrType, fileName, register)
 			if register then
