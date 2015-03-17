@@ -3,8 +3,7 @@ module Udgenerator
 	def self.expected
 		{
 			header: {
-				true: '
-#import <Foundation/Foundation.h>
+				true: '#import <Foundation/Foundation.h>
 
 #define kHogeHoge @"hogeHoge"
 #define kDdd @"ddd"
@@ -53,8 +52,7 @@ module Udgenerator
 
 @end
 ', 
-				false: '
-#import <Foundation/Foundation.h>
+				false: '#import <Foundation/Foundation.h>
 
 #define kHogeHoge @"hogeHoge"
 #define kDdd @"ddd"

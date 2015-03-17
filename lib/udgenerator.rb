@@ -9,12 +9,12 @@ module Udgenerator
 			FileUtils.mkdir_p(options[:output]) unless FileTest.exist?(options[:output])
 
 			if options[:swift] then
+				arrType = swift_exchange(self.fileRead(options[:input]))
+				File.open("#{options[:output]}#{options[:file_name]}.swift", "w:UTF-8").write swift(arrType, options[:file_name], options[:auto_init])
+			else
 				arrType = exchange(self.fileRead(options[:input]))
 				File.open("#{options[:output]}#{options[:file_name]}.h", "w:UTF-8").write header(arrType, options[:file_name], options[:auto_init])
 				File.open("#{options[:output]}#{options[:file_name]}.m", "w:UTF-8").write method(arrType, options[:file_name], options[:auto_init])
-			else
-				arrType = swift_exchange(self.fileRead(options[:input]))
-				File.open("#{options[:output]}#{options[:file_name]}.swift", "w:UTF-8").write swift(arrType, options[:file_name], options[:auto_init])
 			end
 		end
 		def initialize
@@ -33,7 +33,7 @@ module Udgenerator
 		def header(arrType, fileName, register)
 			result = ""
 			arrType.each_pair{|k, v| result += interface(k, v) + "\n"}
-			"\n\#import <Foundation/Foundation.h>\n\n" +
+			"\#import <Foundation/Foundation.h>\n\n" +
 				imp_defines(arrType) +
 				"\n\@interface #{fileName} : NSObject\n\n+ (instancetype)sharedManager;\n#{self.registHeader(register)}\n" + result +
 				"\@end\n"

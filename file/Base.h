@@ -1,10 +1,10 @@
-NSString *itIsLongName;
-NSNumber *number;
-NSArray *array;
-NSDictionary *dict;
-NSData *data;
-NSDate *date;
+NSString *hogeHoge;
+NSData *ddd;
 NSInteger i;
 BOOL b;
 float f;
 double d;
+NSArray* ary;
+NSDictionary* dic;
+NSDate * day;
+NSURL * url;
