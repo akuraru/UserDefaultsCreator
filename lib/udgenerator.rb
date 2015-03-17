@@ -6,14 +6,15 @@ require "udgenerator/swift"
 module Udgenerator
 	class Core
 		def generator(options)
-			FileUtils.mkdir_p(dir) unless FileTest.exist?(dir)
+			FileUtils.mkdir_p(options[:output]) unless FileTest.exist?(options[:output])
+
 			if options[:swift] then
-				arrType = exchange(self.fileRead(file))
-				File.open("#{dir}#{$fileName}.h", "w:UTF-8").write header(arrType, options[:fileName], options[:register])
-				File.open("#{dir}#{$fileName}.m", "w:UTF-8").write method(arrType, options[:fileName], options[:register])
+				arrType = exchange(self.fileRead(options[:input]))
+				File.open("#{options[:output]}#{options[:file_name]}.h", "w:UTF-8").write header(arrType, options[:file_name], options[:auto_init])
+				File.open("#{options[:output]}#{options[:file_name]}.m", "w:UTF-8").write method(arrType, options[:file_name], options[:auto_init])
 			else
-				arrType = swift_exchange(self.fileRead(file))
-				File.open("#{dir}#{$fileName}.swift", "w:UTF-8").write swift(arrType, options[:fileName], options[:register])
+				arrType = swift_exchange(self.fileRead(options[:input]))
+				File.open("#{options[:output]}#{options[:file_name]}.swift", "w:UTF-8").write swift(arrType, options[:file_name], options[:auto_init])
 			end
 		end
 		def initialize

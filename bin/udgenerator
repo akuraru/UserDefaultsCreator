@@ -9,10 +9,10 @@ module Udgenerator
   class CLI < Thor
     default_task :update
 
-    option :auto_init, :type => :boolean, :aliases => '-i', :default => true, :desc => 'auto initialization. all zero or empty string, etc ...'
-    option :none, :type => :boolean, :aliases => '-n', :default => true, :desc => ''
-    option :input_file, :type => :string, :aliases => '-f', :default => true, :required => true,  :desc => 'input file'
-    option :output_file, :type => :string, :aliases => '-o', :default => true, :desc => 'output file'
+    option :auto_init, :type => :boolean, :aliases => '-a', :default => true, :desc => 'auto initialization. all zero or empty string, etc ...'
+    option :input, :type => :string, :aliases => '-i', :default => true, :required => true,  :desc => 'input file'
+    option :output, :type => :string, :aliases => '-o', :default => true, :desc => 'output directory'
+    option :file_name, :type => :string, :aliases => '-f', :default => true, :desc => 'output file name'
     desc "generate", "generate storyboard"
     def update
       Core.new.generate(options)
