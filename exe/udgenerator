@@ -15,7 +15,7 @@ module Udgenerator
     option :file_name, :type => :string, :aliases => '-f', :default => true, :desc => 'output file name'
     desc "generate", "generate storyboard"
     def update
-      Core.new.generate(options)
+      Core.new.generator(options)
     end
 
     desc "version", "version"
