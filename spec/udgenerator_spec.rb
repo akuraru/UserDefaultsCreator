@@ -107,5 +107,41 @@ describe Udgenerator do
         end
       end
     end
+    context :reupdate do
+      context 'header' do
+        before {
+          @exchange = @creater.exchange(Udgenerator::expected[:header][:true].scan(/(.*)\n/).flatten)
+        }
+        it 'true' do
+          expect(@creater.header(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:header][:true]
+        end
+        it 'false' do
+          expect(@creater.header(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:header][:false]
+        end
+      end
+      context 'method' do
+        before {
+          @exchange = @creater.exchange(Udgenerator::expected[:header][:true].scan(/(.*)\n/).flatten)
+        }
+        it 'true' do
+          expect(@creater.method(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:method][:true]
+        end
+        it 'false' do
+          expect(@creater.method(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:method][:false]
+        end
+      end
+      context 'swift' do
+        before {
+          @exchange = @creater.swift_exchange(Udgenerator::expected[:swift][:true].scan(/(.*)\n/).flatten)
+        }
+        it 'true' do
+          expect(@creater.swift(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:swift][:true]
+        end
+        it 'false' do
+          expect(@creater.swift(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:swift][:false]
+        end
+      end
+
+    end
   end
 end

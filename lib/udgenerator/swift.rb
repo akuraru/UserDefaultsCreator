@@ -14,6 +14,8 @@ module Udgenerator
 					result[$2] = object($3)
 				end
 			}
+			result.delete("sharedManager")
+			result.delete("defaults")
 			result
 		end
 		def object(type)
