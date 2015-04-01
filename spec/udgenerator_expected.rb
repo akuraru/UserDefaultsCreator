@@ -1,9 +1,11 @@
 
 module Udgenerator
-	def self.expected
-		{
-			header: {
-				true: '#import <Foundation/Foundation.h>
+    def self.expected
+        {
+            header: {
+                true: {
+                    exist:
+                    '#import <Foundation/Foundation.h>
 
 #define kHogeHoge @"hogeHoge"
 #define kDdd @"ddd"
@@ -52,7 +54,20 @@ module Udgenerator
 
 @end
 ', 
-				false: '#import <Foundation/Foundation.h>
+                    empty:
+                    '#import <Foundation/Foundation.h>
+
+
+@interface UserDefaults : NSObject
+
++ (instancetype)sharedManager;
+
+@end
+',
+                },
+                false: {
+                    exist:
+                    '#import <Foundation/Foundation.h>
 
 #define kHogeHoge @"hogeHoge"
 #define kDdd @"ddd"
@@ -102,9 +117,23 @@ module Udgenerator
 
 @end
 ',
-			},
-			method: {
-				true: '#import "UserDefaults.h"
+                    empty: 
+                    '#import <Foundation/Foundation.h>
+
+
+@interface UserDefaults : NSObject
+
++ (instancetype)sharedManager;
+- (void)registerDefaults:(NSDictionary *)dict;
+
+@end
+',
+                },
+            },
+            method: {
+                true: {
+                    exist:
+                    '#import "UserDefaults.h"
 
 @implementation UserDefaults {
     NSUserDefaults *defaults;
@@ -221,7 +250,40 @@ module Udgenerator
 
 @end
 ',
-				false: '#import "UserDefaults.h"
+                    empty: 
+                    '#import "UserDefaults.h"
+
+@implementation UserDefaults {
+    NSUserDefaults *defaults;
+}
+
++ (instancetype)sharedManager {
+    static UserDefaults *sharedManager_ = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedManager_ = UserDefaults.new;
+    });
+
+    return sharedManager_;
+}
+
+- (id)init {
+    self = [super init];
+    if (self != nil) {
+        defaults = [NSUserDefaults standardUserDefaults];
+        [defaults registerDefaults:@{
+        }];
+    }
+
+    return self;
+}
+
+@end
+',
+                },
+                false: {
+                    exist:
+                    '#import "UserDefaults.h"
 
 @implementation UserDefaults {
     NSUserDefaults *defaults;
@@ -331,9 +393,43 @@ module Udgenerator
 
 @end
 ',
-			},
-			swift: {
-				true: 'import Foundation
+                    empty: 
+                    '#import "UserDefaults.h"
+
+@implementation UserDefaults {
+    NSUserDefaults *defaults;
+}
+
++ (instancetype)sharedManager {
+    static UserDefaults *sharedManager_ = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedManager_ = UserDefaults.new;
+    });
+
+    return sharedManager_;
+}
+
+- (id)init {
+    self = [super init];
+    if (self != nil) {
+        defaults = [NSUserDefaults standardUserDefaults];
+    }
+
+    return self;
+}
+- (void)registerDefaults:(NSDictionary *)dict {
+    [defaults registerDefaults:dict];
+}
+
+@end
+',
+                },
+            },
+            swift: {
+                true: {
+                    exist:
+                    'import Foundation
 
 struct UserDefaultsRegister {
     static let hogeHoge = "hogeHoge"
@@ -447,7 +543,37 @@ class UserDefaults {
     }
 }
 ',
-				false: 'import Foundation
+                    empty: 'import Foundation
+
+struct UserDefaultsRegister {
+}
+
+class UserDefaults {
+    class func sharedManager() -> UserDefaults {
+        struct Static {
+            static let instance = UserDefaults()
+        }
+        return Static.instance
+    }
+    init() {
+        defaults().registerDefaults([:])
+    }
+    func defaults() -> NSUserDefaults {
+        return NSUserDefaults.standardUserDefaults()
+    }
+    func set(value: AnyObject?, forKey: String) {
+        defaults().setObject(value, forKey: forKey)
+        defaults().synchronize()
+    }
+    func get(key: String) -> AnyObject? {
+        return defaults().objectForKey(key)
+    }
+}
+',
+                },
+                false: {
+                    exist:
+                    'import Foundation
 
 struct UserDefaultsRegister {
     static let hogeHoge = "hogeHoge"
@@ -556,7 +682,37 @@ class UserDefaults {
     }
 }
 ',
-			},
-		}
-	end
+                    empty: 'import Foundation
+
+struct UserDefaultsRegister {
+}
+
+class UserDefaults {
+    class func sharedManager() -> UserDefaults {
+        struct Static {
+            static let instance = UserDefaults()
+        }
+        return Static.instance
+    }
+    init() {
+    }
+    func registerDefaults(dict: [String: AnyObject]) {
+        defaults().registerDefaults(dict)
+    }
+    func defaults() -> NSUserDefaults {
+        return NSUserDefaults.standardUserDefaults()
+    }
+    func set(value: AnyObject?, forKey: String) {
+        defaults().setObject(value, forKey: forKey)
+        defaults().synchronize()
+    }
+    func get(key: String) -> AnyObject? {
+        return defaults().objectForKey(key)
+    }
+}
+',
+                },
+            },
+        }
+    end
 end

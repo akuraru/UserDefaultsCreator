@@ -32,26 +32,26 @@ describe Udgenerator do
     }
     context 'header' do
       it 'true' do
-        expect(@creater.header(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:header][:true]
+        expect(@creater.header(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:header][:true][:exist]
       end
       it 'false' do
-        expect(@creater.header(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:header][:false]
+        expect(@creater.header(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:header][:false][:exist]
       end
     end
     context 'method' do
       it 'true' do
-        expect(@creater.method(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:method][:true]
+        expect(@creater.method(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:method][:true][:exist]
       end
       it 'false' do
-        expect(@creater.method(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:method][:false]
+        expect(@creater.method(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:method][:false][:exist]
       end
     end
     context 'swift' do
       it 'true' do
-        expect(@creater.swift(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:swift][:true]
+        expect(@creater.swift(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:swift][:true][:exist]
       end
       it 'false' do
-        expect(@creater.swift(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:swift][:false]
+        expect(@creater.swift(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:swift][:false][:exist]
       end
     end
     context :command do
@@ -77,15 +77,15 @@ describe Udgenerator do
         }
         it 'header' do
           text = File.read('./tmp/true/UserDefaults.h', :encoding => Encoding::UTF_8)
-          expect(text).to eq Udgenerator::expected[:header][:true]
+          expect(text).to eq Udgenerator::expected[:header][:true][:exist]
         end
         it 'method' do
           text = File.read('./tmp/true/UserDefaults.m', :encoding => Encoding::UTF_8)
-          expect(text).to eq Udgenerator::expected[:method][:true]
+          expect(text).to eq Udgenerator::expected[:method][:true][:exist]
         end
         it 'swift' do
           text = File.read('./tmp/true/UserDefaults.swift', :encoding => Encoding::UTF_8)
-          expect(text).to eq Udgenerator::expected[:swift][:true]
+          expect(text).to eq Udgenerator::expected[:swift][:true][:exist]
         end
       end
       context 'false' do
@@ -95,53 +95,88 @@ describe Udgenerator do
         }
         it 'header' do
           text = File.read('./tmp/false/UserDefaults.h', :encoding => Encoding::UTF_8)
-          expect(text).to eq Udgenerator::expected[:header][:false]
+          expect(text).to eq Udgenerator::expected[:header][:false][:exist]
         end
         it 'method' do
           text = File.read('./tmp/false/UserDefaults.m', :encoding => Encoding::UTF_8)
-          expect(text).to eq Udgenerator::expected[:method][:false]
+          expect(text).to eq Udgenerator::expected[:method][:false][:exist]
         end
         it 'swift' do
           text = File.read('./tmp/false/UserDefaults.swift', :encoding => Encoding::UTF_8)
-          expect(text).to eq Udgenerator::expected[:swift][:false]
+          expect(text).to eq Udgenerator::expected[:swift][:false][:exist]
         end
       end
     end
     context :reupdate do
       context 'header' do
         before {
-          @exchange = @creater.exchange(Udgenerator::expected[:header][:true].scan(/(.*)\n/).flatten)
+          @exchange = @creater.exchange(Udgenerator::expected[:header][:true][:exist].scan(/(.*)\n/).flatten)
         }
         it 'true' do
-          expect(@creater.header(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:header][:true]
+          expect(@creater.header(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:header][:true][:exist]
         end
         it 'false' do
-          expect(@creater.header(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:header][:false]
+          expect(@creater.header(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:header][:false][:exist]
         end
       end
       context 'method' do
         before {
-          @exchange = @creater.exchange(Udgenerator::expected[:header][:true].scan(/(.*)\n/).flatten)
+          @exchange = @creater.exchange(Udgenerator::expected[:header][:true][:exist].scan(/(.*)\n/).flatten)
         }
         it 'true' do
-          expect(@creater.method(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:method][:true]
+          expect(@creater.method(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:method][:true][:exist]
         end
         it 'false' do
-          expect(@creater.method(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:method][:false]
+          expect(@creater.method(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:method][:false][:exist]
         end
       end
       context 'swift' do
         before {
-          @exchange = @creater.swift_exchange(Udgenerator::expected[:swift][:true].scan(/(.*)\n/).flatten)
+          @exchange = @creater.swift_exchange(Udgenerator::expected[:swift][:true][:exist].scan(/(.*)\n/).flatten)
         }
         it 'true' do
-          expect(@creater.swift(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:swift][:true]
+          expect(@creater.swift(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:swift][:true][:exist]
         end
         it 'false' do
-          expect(@creater.swift(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:swift][:false]
+          expect(@creater.swift(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:swift][:false][:exist]
         end
       end
+    end
 
+    context :reupdate_empty do
+      context 'header' do
+        before {
+          @exchange = @creater.exchange(Udgenerator::expected[:header][:true][:empty].scan(/(.*)\n/).flatten)
+        }
+        it 'true' do
+          expect(@creater.header(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:header][:true][:empty]
+        end
+        it 'false' do
+          expect(@creater.header(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:header][:false][:empty]
+        end
+      end
+      context 'method' do
+        before {
+          @exchange = @creater.exchange(Udgenerator::expected[:header][:true][:empty].scan(/(.*)\n/).flatten)
+        }
+        it 'true' do
+          expect(@creater.method(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:method][:true][:empty]
+        end
+        it 'false' do
+          expect(@creater.method(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:method][:false][:empty]
+        end
+      end
+      context 'swift' do
+        before {
+          @exchange = @creater.swift_exchange(Udgenerator::expected[:swift][:true][:empty].scan(/(.*)\n/).flatten)
+        }
+        it 'true' do
+          expect(@creater.swift(@exchange, "UserDefaults", true)).to eq Udgenerator::expected[:swift][:true][:empty]
+        end
+        it 'false' do
+          expect(@creater.swift(@exchange, "UserDefaults", false)).to eq Udgenerator::expected[:swift][:false][:empty]
+        end
+      end
     end
   end
 end

@@ -21,7 +21,11 @@ module Udgenerator
 		end
 
 		def fileRead(fileName)
-			File.open(fileName, :encoding => Encoding::UTF_8).read.scan(/(.*)\n/).flatten
+			if (File.exist?(fileName)) then
+				File.open(fileName, :encoding => Encoding::UTF_8).read.scan(/(.*)\n/).flatten
+			else
+				[]
+			end
 		end
 		def registHeader(register)
 			if (register)
