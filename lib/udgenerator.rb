@@ -99,15 +99,19 @@ module Udgenerator
 		end
 		def swift_register_defaults(arrType, fileName, register)
 			if register then
-				"        defaults().registerDefaults([\n" + registers(arrType, fileName) + "        ])"
+				"        defaults().registerDefaults(" + registers(arrType, fileName) + ")"
 			else
 				"    }\n    func registerDefaults(dict: [String: AnyObject]) {\n        defaults().registerDefaults(dict)"
 			end
 		end
 		def registers(arrType, fileName)
-			result = ""
-			arrType.each_pair{|k, v| result += swift_register_default(k, v, fileName)}
-			result
+			if (arrType.count == 0) then
+				"[:]"
+			else
+				result = ""
+				arrType.each_pair{|k, v| result += swift_register_default(k, v, fileName)}
+				"[\n#{result}        ]"
+			end
 		end
 		def structs(arrType)
 			result = ""

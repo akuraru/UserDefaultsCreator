@@ -117,7 +117,7 @@ module Udgenerator
 
 @end
 ',
-                    empty: 
+                    empty:
                     '#import <Foundation/Foundation.h>
 
 
@@ -250,7 +250,7 @@ module Udgenerator
 
 @end
 ',
-                    empty: 
+                    empty:
                     '#import "UserDefaults.h"
 
 @implementation UserDefaults {
@@ -393,7 +393,7 @@ module Udgenerator
 
 @end
 ',
-                    empty: 
+                    empty:
                     '#import "UserDefaults.h"
 
 @implementation UserDefaults {
