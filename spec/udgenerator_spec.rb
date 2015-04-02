@@ -3,7 +3,7 @@ require 'udgenerator_expected'
 
 describe Udgenerator do
   it 'has a version number' do
-    expect(Udgenerator::VERSION).to eq "1.0.5"
+    expect(Udgenerator::VERSION).to eq "1.0.6"
   end
 
   before(:all) {
