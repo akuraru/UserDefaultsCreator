@@ -473,70 +473,70 @@ class UserDefaults {
     }
 
     func hogeHoge() -> String {
-        return get(UserDefaultsRegister.hogeHoge) as String
+        return get(UserDefaultsRegister.hogeHoge) as! String
     }
     func setHogeHoge(hogeHoge: String) {
         set(hogeHoge, forKey: UserDefaultsRegister.hogeHoge)
     }
 
     func ddd() -> NSData {
-        return get(UserDefaultsRegister.ddd) as NSData
+        return get(UserDefaultsRegister.ddd) as! NSData
     }
     func setDdd(ddd: NSData) {
         set(ddd, forKey: UserDefaultsRegister.ddd)
     }
 
     func i() -> Int {
-        return get(UserDefaultsRegister.i) as Int
+        return get(UserDefaultsRegister.i) as! Int
     }
     func setI(i: Int) {
         set(i, forKey: UserDefaultsRegister.i)
     }
 
     func b() -> Bool {
-        return get(UserDefaultsRegister.b) as Bool
+        return get(UserDefaultsRegister.b) as! Bool
     }
     func setB(b: Bool) {
         set(b, forKey: UserDefaultsRegister.b)
     }
 
     func f() -> Float {
-        return get(UserDefaultsRegister.f) as Float
+        return get(UserDefaultsRegister.f) as! Float
     }
     func setF(f: Float) {
         set(f, forKey: UserDefaultsRegister.f)
     }
 
     func d() -> Double {
-        return get(UserDefaultsRegister.d) as Double
+        return get(UserDefaultsRegister.d) as! Double
     }
     func setD(d: Double) {
         set(d, forKey: UserDefaultsRegister.d)
     }
 
     func ary() -> NSArray {
-        return get(UserDefaultsRegister.ary) as NSArray
+        return get(UserDefaultsRegister.ary) as! NSArray
     }
     func setAry(ary: NSArray) {
         set(ary, forKey: UserDefaultsRegister.ary)
     }
 
     func dic() -> NSDictionary {
-        return get(UserDefaultsRegister.dic) as NSDictionary
+        return get(UserDefaultsRegister.dic) as! NSDictionary
     }
     func setDic(dic: NSDictionary) {
         set(dic, forKey: UserDefaultsRegister.dic)
     }
 
     func day() -> NSDate {
-        return get(UserDefaultsRegister.day) as NSDate
+        return get(UserDefaultsRegister.day) as! NSDate
     }
     func setDay(day: NSDate) {
         set(day, forKey: UserDefaultsRegister.day)
     }
 
     func url() -> NSURL {
-        return get(UserDefaultsRegister.url) as NSURL
+        return get(UserDefaultsRegister.url) as! NSURL
     }
     func setUrl(url: NSURL) {
         set(url, forKey: UserDefaultsRegister.url)
@@ -612,70 +612,70 @@ class UserDefaults {
     }
 
     func hogeHoge() -> String {
-        return get(UserDefaultsRegister.hogeHoge) as String
+        return get(UserDefaultsRegister.hogeHoge) as! String
     }
     func setHogeHoge(hogeHoge: String) {
         set(hogeHoge, forKey: UserDefaultsRegister.hogeHoge)
     }
 
     func ddd() -> NSData {
-        return get(UserDefaultsRegister.ddd) as NSData
+        return get(UserDefaultsRegister.ddd) as! NSData
     }
     func setDdd(ddd: NSData) {
         set(ddd, forKey: UserDefaultsRegister.ddd)
     }
 
     func i() -> Int {
-        return get(UserDefaultsRegister.i) as Int
+        return get(UserDefaultsRegister.i) as! Int
     }
     func setI(i: Int) {
         set(i, forKey: UserDefaultsRegister.i)
     }
 
     func b() -> Bool {
-        return get(UserDefaultsRegister.b) as Bool
+        return get(UserDefaultsRegister.b) as! Bool
     }
     func setB(b: Bool) {
         set(b, forKey: UserDefaultsRegister.b)
     }
 
     func f() -> Float {
-        return get(UserDefaultsRegister.f) as Float
+        return get(UserDefaultsRegister.f) as! Float
     }
     func setF(f: Float) {
         set(f, forKey: UserDefaultsRegister.f)
     }
 
     func d() -> Double {
-        return get(UserDefaultsRegister.d) as Double
+        return get(UserDefaultsRegister.d) as! Double
     }
     func setD(d: Double) {
         set(d, forKey: UserDefaultsRegister.d)
     }
 
     func ary() -> NSArray {
-        return get(UserDefaultsRegister.ary) as NSArray
+        return get(UserDefaultsRegister.ary) as! NSArray
     }
     func setAry(ary: NSArray) {
         set(ary, forKey: UserDefaultsRegister.ary)
     }
 
     func dic() -> NSDictionary {
-        return get(UserDefaultsRegister.dic) as NSDictionary
+        return get(UserDefaultsRegister.dic) as! NSDictionary
     }
     func setDic(dic: NSDictionary) {
         set(dic, forKey: UserDefaultsRegister.dic)
     }
 
     func day() -> NSDate {
-        return get(UserDefaultsRegister.day) as NSDate
+        return get(UserDefaultsRegister.day) as! NSDate
     }
     func setDay(day: NSDate) {
         set(day, forKey: UserDefaultsRegister.day)
     }
 
     func url() -> NSURL {
-        return get(UserDefaultsRegister.url) as NSURL
+        return get(UserDefaultsRegister.url) as! NSURL
     }
     func setUrl(url: NSURL) {
         set(url, forKey: UserDefaultsRegister.url)
