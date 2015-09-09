@@ -481,74 +481,84 @@ class UserDefaults {
         return defaults().objectForKey(key.rawValue)
     }
 
-    func hogeHoge() -> String {
-        return get(.hogeHoge) as! String
-    }
-    func setHogeHoge(hogeHoge: String) {
-        set(hogeHoge, forKey: .hogeHoge)
-    }
-
-    func ddd() -> NSData {
-        return get(.ddd) as! NSData
-    }
-    func setDdd(ddd: NSData) {
-        set(ddd, forKey: .ddd)
+    var hogeHoge: String {
+        get {
+            return get(.hogeHoge) as! String
+        } set(newValue) {
+            set(newValue, forKey: .hogeHoge)
+        }
     }
 
-    func i() -> Int {
-        return get(.i) as! Int
-    }
-    func setI(i: Int) {
-        set(i, forKey: .i)
-    }
-
-    func b() -> Bool {
-        return get(.b) as! Bool
-    }
-    func setB(b: Bool) {
-        set(b, forKey: .b)
+    var ddd: NSData {
+        get {
+            return get(.ddd) as! NSData
+        } set(newValue) {
+            set(newValue, forKey: .ddd)
+        }
     }
 
-    func f() -> Float {
-        return get(.f) as! Float
-    }
-    func setF(f: Float) {
-        set(f, forKey: .f)
-    }
-
-    func d() -> Double {
-        return get(.d) as! Double
-    }
-    func setD(d: Double) {
-        set(d, forKey: .d)
+    var i: Int {
+        get {
+            return get(.i) as! Int
+        } set(newValue) {
+            set(newValue, forKey: .i)
+        }
     }
 
-    func ary() -> [AnyObject] {
-        return get(.ary) as! [AnyObject]
-    }
-    func setAry(ary: [AnyObject]) {
-        set(ary, forKey: .ary)
-    }
-
-    func dic() -> [String:AnyObject] {
-        return get(.dic) as! [String:AnyObject]
-    }
-    func setDic(dic: [String:AnyObject]) {
-        set(dic, forKey: .dic)
+    var b: Bool {
+        get {
+            return get(.b) as! Bool
+        } set(newValue) {
+            set(newValue, forKey: .b)
+        }
     }
 
-    func day() -> NSDate {
-        return get(.day) as! NSDate
-    }
-    func setDay(day: NSDate) {
-        set(day, forKey: .day)
+    var f: Float {
+        get {
+            return get(.f) as! Float
+        } set(newValue) {
+            set(newValue, forKey: .f)
+        }
     }
 
-    func url() -> NSURL {
-        return get(.url) as! NSURL
+    var d: Double {
+        get {
+            return get(.d) as! Double
+        } set(newValue) {
+            set(newValue, forKey: .d)
+        }
     }
-    func setUrl(url: NSURL) {
-        set(url, forKey: .url)
+
+    var ary: [AnyObject] {
+        get {
+            return get(.ary) as! [AnyObject]
+        } set(newValue) {
+            set(newValue, forKey: .ary)
+        }
+    }
+
+    var dic: [String:AnyObject] {
+        get {
+            return get(.dic) as! [String:AnyObject]
+        } set(newValue) {
+            set(newValue, forKey: .dic)
+        }
+    }
+
+    var day: NSDate {
+        get {
+            return get(.day) as! NSDate
+        } set(newValue) {
+            set(newValue, forKey: .day)
+        }
+    }
+
+    var url: NSURL {
+        get {
+            return get(.url) as! NSURL
+        } set(newValue) {
+            set(newValue, forKey: .url)
+        }
     }
 }
 ',
@@ -631,74 +641,84 @@ class UserDefaults {
         return defaults().objectForKey(key.rawValue)
     }
 
-    func hogeHoge() -> String {
-        return get(.hogeHoge) as! String
-    }
-    func setHogeHoge(hogeHoge: String) {
-        set(hogeHoge, forKey: .hogeHoge)
-    }
-
-    func ddd() -> NSData {
-        return get(.ddd) as! NSData
-    }
-    func setDdd(ddd: NSData) {
-        set(ddd, forKey: .ddd)
+    var hogeHoge: String {
+        get {
+            return get(.hogeHoge) as! String
+        } set(newValue) {
+            set(newValue, forKey: .hogeHoge)
+        }
     }
 
-    func i() -> Int {
-        return get(.i) as! Int
-    }
-    func setI(i: Int) {
-        set(i, forKey: .i)
-    }
-
-    func b() -> Bool {
-        return get(.b) as! Bool
-    }
-    func setB(b: Bool) {
-        set(b, forKey: .b)
+    var ddd: NSData {
+        get {
+            return get(.ddd) as! NSData
+        } set(newValue) {
+            set(newValue, forKey: .ddd)
+        }
     }
 
-    func f() -> Float {
-        return get(.f) as! Float
-    }
-    func setF(f: Float) {
-        set(f, forKey: .f)
-    }
-
-    func d() -> Double {
-        return get(.d) as! Double
-    }
-    func setD(d: Double) {
-        set(d, forKey: .d)
+    var i: Int {
+        get {
+            return get(.i) as! Int
+        } set(newValue) {
+            set(newValue, forKey: .i)
+        }
     }
 
-    func ary() -> [AnyObject] {
-        return get(.ary) as! [AnyObject]
-    }
-    func setAry(ary: [AnyObject]) {
-        set(ary, forKey: .ary)
-    }
-
-    func dic() -> [String:AnyObject] {
-        return get(.dic) as! [String:AnyObject]
-    }
-    func setDic(dic: [String:AnyObject]) {
-        set(dic, forKey: .dic)
+    var b: Bool {
+        get {
+            return get(.b) as! Bool
+        } set(newValue) {
+            set(newValue, forKey: .b)
+        }
     }
 
-    func day() -> NSDate {
-        return get(.day) as! NSDate
-    }
-    func setDay(day: NSDate) {
-        set(day, forKey: .day)
+    var f: Float {
+        get {
+            return get(.f) as! Float
+        } set(newValue) {
+            set(newValue, forKey: .f)
+        }
     }
 
-    func url() -> NSURL {
-        return get(.url) as! NSURL
+    var d: Double {
+        get {
+            return get(.d) as! Double
+        } set(newValue) {
+            set(newValue, forKey: .d)
+        }
     }
-    func setUrl(url: NSURL) {
-        set(url, forKey: .url)
+
+    var ary: [AnyObject] {
+        get {
+            return get(.ary) as! [AnyObject]
+        } set(newValue) {
+            set(newValue, forKey: .ary)
+        }
+    }
+
+    var dic: [String:AnyObject] {
+        get {
+            return get(.dic) as! [String:AnyObject]
+        } set(newValue) {
+            set(newValue, forKey: .dic)
+        }
+    }
+
+    var day: NSDate {
+        get {
+            return get(.day) as! NSDate
+        } set(newValue) {
+            set(newValue, forKey: .day)
+        }
+    }
+
+    var url: NSURL {
+        get {
+            return get(.url) as! NSURL
+        } set(newValue) {
+            set(newValue, forKey: .url)
+        }
     }
 }
 ',

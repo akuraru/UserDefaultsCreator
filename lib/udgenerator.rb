@@ -121,7 +121,7 @@ module Udgenerator
 		end
 		def swift_get_sets(arrType, fileName)
 			result = ""
-			arrType.each_pair{|s, d| result += "\n    #{swift_getter(s, d)} {\n        return get(.#{s}) as! #{d.swift_type_name}\n    }\n    #{swift_setter(s, d)} {\n        set(#{s}, forKey: .#{s})\n    }\n"}
+			arrType.each_pair{|s, d| result += "\n    var #{s}: #{d.swift_type_name} {\n        get {\n            return get(.#{s}) as! #{d.swift_type_name}\n        } set(newValue) {\n            set(newValue, forKey: .#{s})\n        }\n    }\n"}
 			result
 		end
 	end

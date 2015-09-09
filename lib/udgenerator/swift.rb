@@ -8,9 +8,9 @@ module Udgenerator
 					result[$2] = object($1)
 				elsif /- \((\w+) *\* *\)(\w+);/ =~ s then
 					result[$2] = object($1)
-				elsif /\s*func\s+(\w+)\(\s*\)\s*->\s*((\w|:|\[|\])+)\s*\{?\s*/ =~ s then 
+				elsif /^\s*func\s+(\w+)\(\s*\)\s*->\s*((\w|:|\[|\])+)\s*\{?\s*$/ =~ s then 
 					result[$1] = object($2)
-				elsif /\s*(var|let)\s+(\w+)\s*:\s*(\w+)\??\s*;?\s*/ =~ s then 
+				elsif /^\s*(var|let)\s+(\w+)\s*:\s*((\w|:|\[|\])+)\??\s*(;|\{)?\s*$/ =~ s then 
 					result[$2] = object($3)
 				end
 			}
