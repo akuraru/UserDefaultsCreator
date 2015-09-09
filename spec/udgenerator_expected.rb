@@ -523,17 +523,17 @@ class UserDefaults {
         set(d, forKey: .d)
     }
 
-    func ary() -> NSArray {
-        return get(.ary) as! NSArray
+    func ary() -> [AnyObject] {
+        return get(.ary) as! [AnyObject]
     }
-    func setAry(ary: NSArray) {
+    func setAry(ary: [AnyObject]) {
         set(ary, forKey: .ary)
     }
 
-    func dic() -> NSDictionary {
-        return get(.dic) as! NSDictionary
+    func dic() -> [String:AnyObject] {
+        return get(.dic) as! [String:AnyObject]
     }
-    func setDic(dic: NSDictionary) {
+    func setDic(dic: [String:AnyObject]) {
         set(dic, forKey: .dic)
     }
 
@@ -673,17 +673,17 @@ class UserDefaults {
         set(d, forKey: .d)
     }
 
-    func ary() -> NSArray {
-        return get(.ary) as! NSArray
+    func ary() -> [AnyObject] {
+        return get(.ary) as! [AnyObject]
     }
-    func setAry(ary: NSArray) {
+    func setAry(ary: [AnyObject]) {
         set(ary, forKey: .ary)
     }
 
-    func dic() -> NSDictionary {
-        return get(.dic) as! NSDictionary
+    func dic() -> [String:AnyObject] {
+        return get(.dic) as! [String:AnyObject]
     }
-    func setDic(dic: NSDictionary) {
+    func setDic(dic: [String:AnyObject]) {
         set(dic, forKey: .dic)
     }
 

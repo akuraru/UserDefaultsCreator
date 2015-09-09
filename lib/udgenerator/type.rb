@@ -160,7 +160,7 @@ module Udgenerator
 			"NSArray *"
 		end
 		def swift_type_name
-			"NSArray"
+			"[AnyObject]"
 		end
 		def defaultValue
 			"@[]"
@@ -174,7 +174,7 @@ module Udgenerator
 			"NSDictionary *"
 		end
 		def swift_type_name
-			"NSDictionary"
+			"[String:AnyObject]"
 		end
 		def defaultValue
 			"@{}"
