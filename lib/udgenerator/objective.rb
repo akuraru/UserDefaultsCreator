@@ -29,6 +29,8 @@ module Udgenerator
 				NSData.new()
 			elsif "NSDate" == type
 				NSDate.new()
+			elsif "NSURL" == type
+				NSURL.new()
 			else
 				AnyObject.new("#{type}")
 			end

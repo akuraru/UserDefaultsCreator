@@ -47,7 +47,7 @@ module Udgenerator
 			"#{setter(key, value)} \{\n#{in_imp_setter(key, value)}\}\n"
 		end
 		def struct(key)
-			"    static let #{key} = \"#{key}\""
+			"    case #{key} = \"#{key}\""
 		end
 		def swift_getter(key, value)
 			"func #{key}() -> #{value.swift_type_name}"
@@ -63,7 +63,7 @@ module Udgenerator
 		end
 		def swift_register_default(key, value, fileName)
 			if (0 < value.swift_default_value.length) then
-				" "*12 + "#{fileName}Register.#{key}: #{value.swift_default_value},\n"
+				" "*12 + ".#{key}: #{value.swift_default_value},\n"
 			else
 				""
 			end
@@ -206,6 +206,23 @@ module Udgenerator
 		end
 		def swift_default_value
 			"NSDate()"
+		end
+	end
+	class NSURL < NSObject
+		def == (type)
+			NSURL === type && super(type)
+		end
+		def type_name
+			"NSURL *"
+		end
+		def swift_type_name
+			"NSURL"
+		end
+		def defaultValue
+			"[[NSURL alloc] init]"
+		end
+		def swift_default_value
+			"NSURL()"
 		end
 	end
 	class AnyObject < NSObject

@@ -162,6 +162,7 @@ module Udgenerator
             kAry : @[],
             kDic : @{},
             kDay : [NSDate date],
+            kUrl : [[NSURL alloc] init],
         }];
     }
 
@@ -431,17 +432,17 @@ module Udgenerator
                     exist:
                     'import Foundation
 
-struct UserDefaultsRegister {
-    static let hogeHoge = "hogeHoge"
-    static let ddd = "ddd"
-    static let i = "i"
-    static let b = "b"
-    static let f = "f"
-    static let d = "d"
-    static let ary = "ary"
-    static let dic = "dic"
-    static let day = "day"
-    static let url = "url"
+enum UserDefaultsRegister: String {
+    case hogeHoge = "hogeHoge"
+    case ddd = "ddd"
+    case i = "i"
+    case b = "b"
+    case f = "f"
+    case d = "d"
+    case ary = "ary"
+    case dic = "dic"
+    case day = "day"
+    case url = "url"
 }
 
 class UserDefaults {
@@ -452,100 +453,108 @@ class UserDefaults {
         return Static.instance
     }
     init() {
-        defaults().registerDefaults([
-            UserDefaultsRegister.hogeHoge: "",
-            UserDefaultsRegister.i: 0,
-            UserDefaultsRegister.b: false,
-            UserDefaultsRegister.f: 0,
-            UserDefaultsRegister.d: 0,
-            UserDefaultsRegister.day: NSDate(),
+        registerDefaults([
+            .hogeHoge: "",
+            .i: 0,
+            .b: false,
+            .f: 0,
+            .d: 0,
+            .day: NSDate(),
+            .url: NSURL(),
         ])
+    }
+    func registerDefaults(dict: [UserDefaultsRegister: AnyObject]) {
+        var register: [String: AnyObject] = [:]
+        for (key, value) in dict {
+            register[key.rawValue] = value
+        }
+        defaults().registerDefaults(register)
     }
     func defaults() -> NSUserDefaults {
         return NSUserDefaults.standardUserDefaults()
     }
-    func set(value: AnyObject?, forKey: String) {
-        defaults().setObject(value, forKey: forKey)
+    func set(value: AnyObject?, forKey key: UserDefaultsRegister) {
+        defaults().setObject(value, forKey: key.rawValue)
         defaults().synchronize()
     }
-    func get(key: String) -> AnyObject? {
-        return defaults().objectForKey(key)
+    func get(key: UserDefaultsRegister) -> AnyObject? {
+        return defaults().objectForKey(key.rawValue)
     }
 
     func hogeHoge() -> String {
-        return get(UserDefaultsRegister.hogeHoge) as! String
+        return get(.hogeHoge) as! String
     }
     func setHogeHoge(hogeHoge: String) {
-        set(hogeHoge, forKey: UserDefaultsRegister.hogeHoge)
+        set(hogeHoge, forKey: .hogeHoge)
     }
 
     func ddd() -> NSData {
-        return get(UserDefaultsRegister.ddd) as! NSData
+        return get(.ddd) as! NSData
     }
     func setDdd(ddd: NSData) {
-        set(ddd, forKey: UserDefaultsRegister.ddd)
+        set(ddd, forKey: .ddd)
     }
 
     func i() -> Int {
-        return get(UserDefaultsRegister.i) as! Int
+        return get(.i) as! Int
     }
     func setI(i: Int) {
-        set(i, forKey: UserDefaultsRegister.i)
+        set(i, forKey: .i)
     }
 
     func b() -> Bool {
-        return get(UserDefaultsRegister.b) as! Bool
+        return get(.b) as! Bool
     }
     func setB(b: Bool) {
-        set(b, forKey: UserDefaultsRegister.b)
+        set(b, forKey: .b)
     }
 
     func f() -> Float {
-        return get(UserDefaultsRegister.f) as! Float
+        return get(.f) as! Float
     }
     func setF(f: Float) {
-        set(f, forKey: UserDefaultsRegister.f)
+        set(f, forKey: .f)
     }
 
     func d() -> Double {
-        return get(UserDefaultsRegister.d) as! Double
+        return get(.d) as! Double
     }
     func setD(d: Double) {
-        set(d, forKey: UserDefaultsRegister.d)
+        set(d, forKey: .d)
     }
 
     func ary() -> NSArray {
-        return get(UserDefaultsRegister.ary) as! NSArray
+        return get(.ary) as! NSArray
     }
     func setAry(ary: NSArray) {
-        set(ary, forKey: UserDefaultsRegister.ary)
+        set(ary, forKey: .ary)
     }
 
     func dic() -> NSDictionary {
-        return get(UserDefaultsRegister.dic) as! NSDictionary
+        return get(.dic) as! NSDictionary
     }
     func setDic(dic: NSDictionary) {
-        set(dic, forKey: UserDefaultsRegister.dic)
+        set(dic, forKey: .dic)
     }
 
     func day() -> NSDate {
-        return get(UserDefaultsRegister.day) as! NSDate
+        return get(.day) as! NSDate
     }
     func setDay(day: NSDate) {
-        set(day, forKey: UserDefaultsRegister.day)
+        set(day, forKey: .day)
     }
 
     func url() -> NSURL {
-        return get(UserDefaultsRegister.url) as! NSURL
+        return get(.url) as! NSURL
     }
     func setUrl(url: NSURL) {
-        set(url, forKey: UserDefaultsRegister.url)
+        set(url, forKey: .url)
     }
 }
 ',
                     empty: 'import Foundation
 
-struct UserDefaultsRegister {
+enum UserDefaultsRegister: String {
 }
 
 class UserDefaults {
@@ -556,17 +565,24 @@ class UserDefaults {
         return Static.instance
     }
     init() {
-        defaults().registerDefaults([:])
+        registerDefaults([:])
+    }
+    func registerDefaults(dict: [UserDefaultsRegister: AnyObject]) {
+        var register: [String: AnyObject] = [:]
+        for (key, value) in dict {
+            register[key.rawValue] = value
+        }
+        defaults().registerDefaults(register)
     }
     func defaults() -> NSUserDefaults {
         return NSUserDefaults.standardUserDefaults()
     }
-    func set(value: AnyObject?, forKey: String) {
-        defaults().setObject(value, forKey: forKey)
+    func set(value: AnyObject?, forKey key: UserDefaultsRegister) {
+        defaults().setObject(value, forKey: key.rawValue)
         defaults().synchronize()
     }
-    func get(key: String) -> AnyObject? {
-        return defaults().objectForKey(key)
+    func get(key: UserDefaultsRegister) -> AnyObject? {
+        return defaults().objectForKey(key.rawValue)
     }
 }
 ',
@@ -575,17 +591,17 @@ class UserDefaults {
                     exist:
                     'import Foundation
 
-struct UserDefaultsRegister {
-    static let hogeHoge = "hogeHoge"
-    static let ddd = "ddd"
-    static let i = "i"
-    static let b = "b"
-    static let f = "f"
-    static let d = "d"
-    static let ary = "ary"
-    static let dic = "dic"
-    static let day = "day"
-    static let url = "url"
+enum UserDefaultsRegister: String {
+    case hogeHoge = "hogeHoge"
+    case ddd = "ddd"
+    case i = "i"
+    case b = "b"
+    case f = "f"
+    case d = "d"
+    case ary = "ary"
+    case dic = "dic"
+    case day = "day"
+    case url = "url"
 }
 
 class UserDefaults {
@@ -597,94 +613,98 @@ class UserDefaults {
     }
     init() {
     }
-    func registerDefaults(dict: [String: AnyObject]) {
-        defaults().registerDefaults(dict)
+    func registerDefaults(dict: [UserDefaultsRegister: AnyObject]) {
+        var register: [String: AnyObject] = [:]
+        for (key, value) in dict {
+            register[key.rawValue] = value
+        }
+        defaults().registerDefaults(register)
     }
     func defaults() -> NSUserDefaults {
         return NSUserDefaults.standardUserDefaults()
     }
-    func set(value: AnyObject?, forKey: String) {
-        defaults().setObject(value, forKey: forKey)
+    func set(value: AnyObject?, forKey key: UserDefaultsRegister) {
+        defaults().setObject(value, forKey: key.rawValue)
         defaults().synchronize()
     }
-    func get(key: String) -> AnyObject? {
-        return defaults().objectForKey(key)
+    func get(key: UserDefaultsRegister) -> AnyObject? {
+        return defaults().objectForKey(key.rawValue)
     }
 
     func hogeHoge() -> String {
-        return get(UserDefaultsRegister.hogeHoge) as! String
+        return get(.hogeHoge) as! String
     }
     func setHogeHoge(hogeHoge: String) {
-        set(hogeHoge, forKey: UserDefaultsRegister.hogeHoge)
+        set(hogeHoge, forKey: .hogeHoge)
     }
 
     func ddd() -> NSData {
-        return get(UserDefaultsRegister.ddd) as! NSData
+        return get(.ddd) as! NSData
     }
     func setDdd(ddd: NSData) {
-        set(ddd, forKey: UserDefaultsRegister.ddd)
+        set(ddd, forKey: .ddd)
     }
 
     func i() -> Int {
-        return get(UserDefaultsRegister.i) as! Int
+        return get(.i) as! Int
     }
     func setI(i: Int) {
-        set(i, forKey: UserDefaultsRegister.i)
+        set(i, forKey: .i)
     }
 
     func b() -> Bool {
-        return get(UserDefaultsRegister.b) as! Bool
+        return get(.b) as! Bool
     }
     func setB(b: Bool) {
-        set(b, forKey: UserDefaultsRegister.b)
+        set(b, forKey: .b)
     }
 
     func f() -> Float {
-        return get(UserDefaultsRegister.f) as! Float
+        return get(.f) as! Float
     }
     func setF(f: Float) {
-        set(f, forKey: UserDefaultsRegister.f)
+        set(f, forKey: .f)
     }
 
     func d() -> Double {
-        return get(UserDefaultsRegister.d) as! Double
+        return get(.d) as! Double
     }
     func setD(d: Double) {
-        set(d, forKey: UserDefaultsRegister.d)
+        set(d, forKey: .d)
     }
 
     func ary() -> NSArray {
-        return get(UserDefaultsRegister.ary) as! NSArray
+        return get(.ary) as! NSArray
     }
     func setAry(ary: NSArray) {
-        set(ary, forKey: UserDefaultsRegister.ary)
+        set(ary, forKey: .ary)
     }
 
     func dic() -> NSDictionary {
-        return get(UserDefaultsRegister.dic) as! NSDictionary
+        return get(.dic) as! NSDictionary
     }
     func setDic(dic: NSDictionary) {
-        set(dic, forKey: UserDefaultsRegister.dic)
+        set(dic, forKey: .dic)
     }
 
     func day() -> NSDate {
-        return get(UserDefaultsRegister.day) as! NSDate
+        return get(.day) as! NSDate
     }
     func setDay(day: NSDate) {
-        set(day, forKey: UserDefaultsRegister.day)
+        set(day, forKey: .day)
     }
 
     func url() -> NSURL {
-        return get(UserDefaultsRegister.url) as! NSURL
+        return get(.url) as! NSURL
     }
     func setUrl(url: NSURL) {
-        set(url, forKey: UserDefaultsRegister.url)
+        set(url, forKey: .url)
     }
 }
 ',
                     empty: 'import Foundation
 
-struct UserDefaultsRegister {
+enum UserDefaultsRegister: String {
 }
 
 class UserDefaults {
@@ -696,18 +716,22 @@ class UserDefaults {
     }
     init() {
     }
-    func registerDefaults(dict: [String: AnyObject]) {
-        defaults().registerDefaults(dict)
+    func registerDefaults(dict: [UserDefaultsRegister: AnyObject]) {
+        var register: [String: AnyObject] = [:]
+        for (key, value) in dict {
+            register[key.rawValue] = value
+        }
+        defaults().registerDefaults(register)
     }
     func defaults() -> NSUserDefaults {
         return NSUserDefaults.standardUserDefaults()
     }
-    func set(value: AnyObject?, forKey: String) {
-        defaults().setObject(value, forKey: forKey)
+    func set(value: AnyObject?, forKey key: UserDefaultsRegister) {
+        defaults().setObject(value, forKey: key.rawValue)
         defaults().synchronize()
     }
-    func get(key: String) -> AnyObject? {
-        return defaults().objectForKey(key)
+    func get(key: UserDefaultsRegister) -> AnyObject? {
+        return defaults().objectForKey(key.rawValue)
     }
 }
 ',

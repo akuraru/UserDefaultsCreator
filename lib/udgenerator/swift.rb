@@ -33,6 +33,8 @@ module Udgenerator
 				NSData.new()
 			elsif "NSDate" == type
 				NSDate.new()
+			elsif "NSURL" == type
+				NSURL.new()
 			elsif "Bool" == type
 				NSBOOL.new()
 			elsif "Int" == type

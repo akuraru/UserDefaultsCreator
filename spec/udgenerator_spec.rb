@@ -1,9 +1,17 @@
 require 'spec_helper'
 require 'udgenerator_expected'
 
+Dir.mkdir("tmp") unless Dir.exist?("tmp")
+
+creater = Udgenerator::Core.new
+creater.generator({auto_init: true, input: "./file/Base.h", output: "./tmp/true/", file_name: "UserDefaults", swift: false})
+creater.generator({auto_init: true, input: "./file/Base.swift", output: "./tmp/true/", file_name: "UserDefaults", swift: true})
+creater.generator({auto_init: false, input: "./file/Base.h", output: "./tmp/false/", file_name: "UserDefaults", swift: false})
+creater.generator({auto_init: false, input: "./file/Base.swift", output: "./tmp/false/", file_name: "UserDefaults", swift: true})
+
 describe Udgenerator do
   it 'has a version number' do
-    expect(Udgenerator::VERSION).to eq "1.0.6"
+    expect(Udgenerator::VERSION).to eq "1.1.0"
   end
 
   before(:all) {
@@ -55,26 +63,7 @@ describe Udgenerator do
       end
     end
     context :command do
-      before {
-        Dir.mkdir("tmp") unless Dir.exist?("tmp")
-      }
-      after {
-        # dir = "tmp"
-        # Dir::glob(dir + "**/").sort {
-        #   |a,b| b.split('/').size <=> a.split('/').size
-        # }.each {|d|
-        #   Dir::foreach(d) {|f|
-        #     File::delete(d+f) if ! (/\.+$/ =~ f)
-        #   }
-        #   Dir::rmdir(d)
-        # }
-        Dir.mkdir("tmp") unless Dir.exist?("tmp")
-      }
       context 'true' do
-        before(:all) {
-          # @creater.generator({auto_init: true, input: "./file/Base.h", output: "./tmp/true/", file_name: "UserDefaults", swift: false})
-          # @creater.generator({auto_init: true, input: "./file/Base.swift", output: "./tmp/true/", file_name: "UserDefaults", swift: true})
-        }
         it 'header' do
           text = File.read('./tmp/true/UserDefaults.h', :encoding => Encoding::UTF_8)
           expect(text).to eq Udgenerator::expected[:header][:true][:exist]
@@ -89,10 +78,6 @@ describe Udgenerator do
         end
       end
       context 'false' do
-        before(:all) {
-          # @creater.generator({auto_init: false, input: "./file/Base.h", output: "./tmp/false/", file_name: "UserDefaults", swift: false})
-          # @creater.generator({auto_init: false, input: "./file/Base.swift", output: "./tmp/false/", file_name: "UserDefaults", swift: true})
-        }
         it 'header' do
           text = File.read('./tmp/false/UserDefaults.h', :encoding => Encoding::UTF_8)
           expect(text).to eq Udgenerator::expected[:header][:false][:exist]

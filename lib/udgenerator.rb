@@ -75,7 +75,7 @@ module Udgenerator
 				"@end\n"
 		end
 		def swift(arrType, fileName, register)
-			"import Foundation\n\nstruct #{fileName}Register {\n#{structs(arrType)}}\n\nclass #{fileName} {" + '
+			"import Foundation\n\nenum #{fileName}Register: String {\n#{structs(arrType)}}\n\nclass #{fileName} {" + '
     class func sharedManager() -> UserDefaults {
         struct Static {
             static let instance = UserDefaults()
@@ -88,21 +88,22 @@ module Udgenerator
     func defaults() -> NSUserDefaults {
         return NSUserDefaults.standardUserDefaults()
     }
-    func set(value: AnyObject?, forKey: String) {
-        defaults().setObject(value, forKey: forKey)
+    func set(value: AnyObject?, forKey key: UserDefaultsRegister) {
+        defaults().setObject(value, forKey: key.rawValue)
         defaults().synchronize()
     }
-    func get(key: String) -> AnyObject? {
-        return defaults().objectForKey(key)
+    func get(key: UserDefaultsRegister) -> AnyObject? {
+        return defaults().objectForKey(key.rawValue)
     }
 ' + swift_get_sets(arrType, fileName) + "}\n"
 		end
 		def swift_register_defaults(arrType, fileName, register)
-			if register then
-				"        defaults().registerDefaults(" + registers(arrType, fileName) + ")"
+			defaults = if register then
+				"        registerDefaults(" + registers(arrType, fileName) + ")\n"
 			else
-				"    }\n    func registerDefaults(dict: [String: AnyObject]) {\n        defaults().registerDefaults(dict)"
+				""
 			end
+			defaults + "    }\n    func registerDefaults(dict: [#{fileName}Register: AnyObject]) {\n        var register: [String: AnyObject] = [:]\n        for (key, value) in dict {\n            register[key.rawValue] = value\n        }\n        defaults().registerDefaults(register)"
 		end
 		def registers(arrType, fileName)
 			if (arrType.count == 0) then
@@ -120,7 +121,7 @@ module Udgenerator
 		end
 		def swift_get_sets(arrType, fileName)
 			result = ""
-			arrType.each_pair{|s, d| result += "\n    #{swift_getter(s, d)} {\n        return get(#{fileName}Register.#{s}) as! #{d.swift_type_name}\n    }\n    #{swift_setter(s, d)} {\n        set(#{s}, forKey: #{fileName}Register.#{s})\n    }\n"}
+			arrType.each_pair{|s, d| result += "\n    #{swift_getter(s, d)} {\n        return get(.#{s}) as! #{d.swift_type_name}\n    }\n    #{swift_setter(s, d)} {\n        set(#{s}, forKey: .#{s})\n    }\n"}
 			result
 		end
 	end
